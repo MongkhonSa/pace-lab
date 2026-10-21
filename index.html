@@ -97,6 +97,29 @@ td.num{font-size:1.05rem}
 td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:8px}
 
 .note{font-size:.85rem;color:var(--muted);margin:0;max-width:65ch}
+
+/* training guide */
+.guide{display:flex;flex-direction:column;gap:16px}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.rule .k{font:700 1.5rem/1 var(--display);color:var(--accent);font-variant-numeric:tabular-nums}
+.rule h3{font-size:1rem}
+.rule p{margin:0;font-size:.88rem;color:var(--muted)}
+.seg{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px;flex-wrap:wrap}
+.seg button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 .9rem var(--body);padding:7px 12px;border-radius:7px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--soft);color:var(--ink)}
+.week td{white-space:normal;vertical-align:top}
+.week td:first-child{white-space:nowrap;font-weight:600}
+.week .wk{font-weight:600}
+.week .wd{font-size:.85rem;color:var(--muted)}
+.chip{display:inline-block;font:700 .75rem var(--display);color:var(--c);border:1px solid var(--c);border-radius:5px;padding:1px 6px;margin-right:6px}
+.lib{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.wo{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.wo h3{font-size:1rem;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.wo ul{margin:0;padding-left:18px;font-size:.9rem}
+.wo li{margin:2px 0}
+.wo .tip{font-size:.82rem;color:var(--muted)}
+.wo b{font-family:var(--display);font-variant-numeric:tabular-nums}
 footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
 
 @media (max-width:520px){
@@ -203,6 +226,33 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   </table></div>
 </div>
 
+<section class="guide" id="guide">
+  <div class="sec-head"><h2>วิธีเอาไปซ้อม</h2><span>pace ในตัวอย่างอัปเดตตามผลเทสของคุณ</span></div>
+
+  <div class="rules">
+    <div class="rule"><span class="k">80/20</span><h3>ช้าเป็นส่วนใหญ่</h3><p>ประมาณ 80% ของเวลาวิ่งทั้งสัปดาห์อยู่ที่ Easy อีก 20% เป็นวันหนัก (T, I, R)</p></div>
+    <div class="rule"><span class="k">2</span><h3>วันหนักไม่เกิน 2 วัน/สัปดาห์</h3><p>ห้ามวางวันหนักติดกัน คั่นด้วยวัน Easy หรือวันพักเสมอ</p></div>
+    <div class="rule"><span class="k">+10%</span><h3>เพิ่มระยะทีละน้อย</h3><p>ระยะรวมต่อสัปดาห์เพิ่มไม่เกินราว 10% และทุก 3–4 สัปดาห์ให้ลดลงหนึ่งสัปดาห์</p></div>
+    <div class="rule"><span class="k">4–6</span><h3>สัปดาห์แล้วเทสใหม่</h3><p>ถ้าวัน T และ I เริ่มรู้สึกง่าย เทสใหม่แล้วใช้ pace ชุดใหม่ อย่าเร่งเองก่อน</p></div>
+  </div>
+
+  <div class="sec-head"><h3 style="font-size:1.1rem">ตัวอย่างตารางซ้อม 1 สัปดาห์</h3>
+    <div class="seg" role="group" aria-label="จำนวนวันซ้อมต่อสัปดาห์">
+      <button type="button" id="d3" data-d="3" aria-pressed="false">3 วัน</button>
+      <button type="button" id="d4" data-d="4" aria-pressed="true">4 วัน</button>
+      <button type="button" id="d5" data-d="5" aria-pressed="false">5 วัน</button>
+    </div>
+  </div>
+  <div class="tbl-wrap"><table class="week">
+    <thead><tr><th>วัน</th><th>ซ้อม</th></tr></thead>
+    <tbody id="o-week"></tbody>
+  </table></div>
+
+  <h3 style="font-size:1.1rem">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
+  <div class="lib" id="o-lib"></div>
+  <p class="note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
+</section>
+
 <p class="note">ตัวเลขเป็นจุดเริ่มต้น ไม่ใช่กฎตายตัว วันร้อนหรือชื้นแบบกรุงเทพฯ ให้ช้าลง 10–20 วินาที/กม. โดยเฉพาะ Easy และ Marathon ควรเทสซ้ำทุก 4–6 สัปดาห์</p>
 
 <footer>สูตร: Daniels &amp; Gilbert (VDOT), Friel (LTHR zones). Cooper เทียบเป็น VDOT ด้วยสูตรเดียวกัน (12 นาทีเต็มที่)</footer>
@@ -260,7 +310,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
     const V = err ? NaN : vdotOf(d, tMin);
     if (!err && (V < 20 || V > 90)) err = 'ผลเทสอยู่นอกช่วงที่สูตรใช้ได้ ลองเช็กตัวเลขอีกครั้ง';
-    $('err').hidden = !err; $('err').textContent = err;
+    $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err;
     if (err){ $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
 
     $('o-vdot').textContent = V.toFixed(1);
@@ -275,6 +325,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       ['I','Interval','VO₂max เช่น 5 × 1,000 ม. พักจ็อกเท่าเวลาวิ่ง', 'var(--z4)', fmt(secPerKm(vI)), `/กม. · ${fmt(per400(vI))} /400ม.`],
       ['R','Repetition','ความเร็ว ฟอร์ม เช่น 8 × 400 ม. พักเต็มที่', 'var(--z5)', fmt(per400(vR)), `/400ม. · ${fmt(secPerKm(vR))} /กม.`],
     ];
+    P = { E:`${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, M:fmt(secPerKm(vM)), T:fmt(secPerKm(vT)), T400:fmt(per400(vT)),
+          I:fmt(secPerKm(vI)), I400:fmt(per400(vI)), I1k:fmt(secPerKm(vI)), R400:fmt(per400(vR)), R200:fmt(per400(vR)/2) };
+    renderGuide();
     $('o-lanes').innerHTML = lanes.map(([c,n,u,col,p,unit]) =>
       `<div class="lane" style="--c:${col}"><div class="bar"></div>
         <div class="info"><div class="name"><span class="code">${c}</span><h3>${n}</h3></div><div class="use">${u}</div></div>
@@ -295,6 +348,46 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
         return `<tr><td style="--c:${c}"><span class="dot"></span>${n}</td><td class="num">${r}</td><td>${f}</td></tr>`; }).join('');
     }
   }
+
+  // ---- training guide ----
+  let P = null, days = 4;
+  try{ const d = parseInt(localStorage.getItem('pacelab-days')); if ([3,4,5].includes(d)) days = d; }catch(e){}
+  const Z = {E:'var(--z1)',M:'var(--z2)',T:'var(--z3)',I:'var(--z4)',R:'var(--z5)',X:'var(--muted)'};
+  const chip = c => `<span class="chip" style="--c:${Z[c]}">${c==='X'?'พัก':c}</span>`;
+
+  function plan(){
+    const easy = m => ({z:'E', t:`Easy ${m} นาที`, d:`pace ${P.E} /กม.`});
+    const rest = {z:'X', t:'พัก หรือเดินเบา ๆ / ยืดเหยียด', d:''};
+    const T = {z:'T', t:'Threshold: 4 × 1.6 กม. พักจ็อก 1 นาที', d:`pace ${P.T} /กม. (${P.T400} ต่อรอบ 400 ม.)`};
+    const I = {z:'I', t:'Interval: 5 × 1,000 ม. พักจ็อก 3 นาที', d:`pace ${P.I1k} /กม. (${P.I400} ต่อรอบ 400 ม.)`};
+    const L = {z:'E', t:'วิ่งยาว 70–90 นาที', d:`Easy ${P.E} /กม. ถ้าซ้อมมาราธอน 20 นาทีท้ายใช้ pace M ${P.M}`};
+    const S = {z:'R', t:'Easy 30 นาที + 6 × 200 ม. เร็ว พักเดิน 200 ม.', d:`200 ม. ละ ${P.R200}`};
+    const map = {
+      3: [['จันทร์',rest],['อังคาร',T],['พุธ',rest],['พฤหัส',easy(35)],['ศุกร์',rest],['เสาร์',rest],['อาทิตย์',L]],
+      4: [['จันทร์',rest],['อังคาร',I],['พุธ',easy(40)],['พฤหัส',rest],['ศุกร์',T],['เสาร์',rest],['อาทิตย์',L]],
+      5: [['จันทร์',rest],['อังคาร',I],['พุธ',easy(45)],['พฤหัส',T],['ศุกร์',rest],['เสาร์',S],['อาทิตย์',L]]
+    };
+    return map[days];
+  }
+
+  function renderGuide(){
+    if (!P) return;
+    document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.d===days));
+    $('o-week').innerHTML = plan().map(([day,w]) =>
+      `<tr><td>${day}</td><td>${chip(w.z)}<span class="wk">${w.t}</span>${w.d?`<div class="wd">${w.d}</div>`:''}</td></tr>`).join('');
+    const lib = [
+      ['E','Easy / วิ่งยาว',[`วิ่งต่อเนื่อง 30–60 นาที ที่ ${P.E} /กม.`,`วิ่งยาวสัปดาห์ละครั้ง ไม่เกิน ~25–30% ของระยะทั้งสัปดาห์`],'ถ้าคุยเป็นประโยคไม่ได้ แปลว่าเร็วไป ช้ากว่านี้ได้เสมอ'],
+      ['M','Marathon pace',[`วิ่งยาว 90 นาที โดย 30 นาทีท้ายใช้ <b>${P.M}</b> /กม.`,`3 × 5 กม. ที่ <b>${P.M}</b> พักจ็อก 5 นาที`],'ใช้เฉพาะช่วงเตรียมแข่งฮาล์ฟ/มาราธอน 8–12 สัปดาห์ก่อนวันแข่ง'],
+      ['T','Threshold',[`Tempo ต่อเนื่อง 20 นาที ที่ <b>${P.T}</b> /กม.`,`Cruise: 4–5 × 1.6 กม. ที่ <b>${P.T}</b> พักจ็อก 1 นาที`],'เหนื่อยแต่คุมได้ พูดได้ทีละคำ T รวมต่อครั้งไม่เกิน ~10% ของระยะทั้งสัปดาห์'],
+      ['I','Interval (VO₂max)',[`5 × 1,000 ม. ที่ <b>${P.I1k}</b> /กม. พักจ็อก 3 นาที`,`6 × 800 ม. ที่ <b>${P.I400}</b> ต่อรอบ 400 ม. พักจ็อก 2–3 นาที`],'แต่ละเที่ยว 3–5 นาที I รวมต่อครั้งไม่เกิน 8% ของระยะทั้งสัปดาห์ หรือ 10 กม.'],
+      ['R','Repetition',[`8 × 400 ม. ที่ <b>${P.R400}</b> พักเดิน/จ็อก 400 ม.`,`8 × 200 ม. ที่ <b>${P.R200}</b> พักเดิน 200 ม.`],'เน้นฟอร์มและความเร็ว พักให้หายเหนื่อยเต็มที่ก่อนเที่ยวถัดไป']
+    ];
+    $('o-lib').innerHTML = lib.map(([c,n,items,tip]) =>
+      `<div class="wo" style="--c:${Z[c]}"><h3>${chip(c)}${n}</h3><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul><div class="tip">${tip}</div></div>`).join('');
+  }
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+    days = +b.dataset.d; try{ localStorage.setItem('pacelab-days', days); }catch(e){} renderGuide();
+  }));
 
   setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
 })();
