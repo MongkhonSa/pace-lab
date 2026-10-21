@@ -127,6 +127,13 @@ footer a{color:var(--accent)}
 .credit{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
 .credit .by{font-size:.95rem;color:var(--ink)}
 .credit .by b{font-family:var(--display)}
+.tip-jar{display:flex;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;flex-wrap:wrap}
+.tip-jar img{width:180px;height:auto;max-width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
+.tj-text{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.tj-text h2{font-size:1.1rem;margin:0}
+.tj-text p{margin:0;color:var(--muted)}
+.tj-how{font-size:.8rem}
+@media (max-width:520px){.tip-jar img{width:100%;max-width:260px;margin:0 auto}}
 .coffee{display:inline-flex;align-items:center;gap:8px;background:#FFDD00;color:#1A1A1A;font:600 .95rem var(--body);text-decoration:none;padding:9px 16px;border-radius:999px}
 .coffee:hover{filter:brightness(.95)}
 .coffee:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -267,8 +274,14 @@ footer a{color:var(--accent)}
 <footer>
   <div class="credit">
     <span class="by">ทำโดย <a href="https://runnear.me"><b>Runnear.me</b></a></span>
-    <!-- ใส่ลิงก์ Buy Me a Coffee ที่ href แล้วลบ hidden ออก -->
-    <a class="coffee" id="coffee" href="https://buymeacoffee.com/" target="_blank" rel="noopener" hidden>☕ Buy me a coffee</a>
+  </div>
+  <div class="tip-jar">
+    <img src="promptpay-qr.jpg" width="600" height="558" alt="QR พร้อมเพย์ สำหรับเลี้ยงกาแฟ Runnear.me" loading="lazy">
+    <div class="tj-text">
+      <h2>☕ เลี้ยงกาแฟสักแก้ว</h2>
+      <p>ถ้าเว็บนี้ช่วยให้ซ้อมง่ายขึ้น สนับสนุน Runnear.me ได้ผ่านพร้อมเพย์ ทุกบาทช่วยให้ทำเครื่องมือฟรีสำหรับนักวิ่งต่อไป</p>
+      <p class="tj-how">เปิดบนมือถือ? แคปหน้าจอ แล้วเลือก "สแกนจากรูป" ในแอปธนาคารหรือทรูมันนี่</p>
+    </div>
   </div>
   <div>
     <h2>อ้างอิง</h2>
