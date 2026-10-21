@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pace Lab</title>
+<meta name="description" content="คำนวณ pace ซ้อมวิ่งจากผลเทส 3K/5K (VDOT), เทส Lactate Threshold 30 นาที และ Cooper 12 นาที">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Anuphan:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column "lap sheet" — test picker, inputs, then a stopwatch readout and pace zones as lanes */
+:root{
+  --bg:#EEF1F5; --surface:#FFFFFF; --ink:#101A2B; --muted:#5A6577; --line:#D5DBE5;
+  --accent:#2448D8; --accent-ink:#FFFFFF; --soft:#E3E8F6;
+  --z1:#3E9C76; --z2:#7BA33A; --z3:#D79A22; --z4:#E0672E; --z5:#C8323C;
+  --display:"Chakra Petch", "Anuphan", system-ui, sans-serif;
+  --body:"Anuphan", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C121D; --surface:#151D2B; --ink:#E8EDF5; --muted:#97A2B5; --line:#273246;
+  --accent:#6E8CFF; --accent-ink:#0C121D; --soft:#1D2840;
+  --z1:#4FBF92; --z2:#9BC452; --z3:#E8B347; --z4:#F08550; --z5:#EE5B64; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C121D; --surface:#151D2B; --ink:#E8EDF5; --muted:#97A2B5; --line:#273246;
+  --accent:#6E8CFF; --accent-ink:#0C121D; --soft:#1D2840;
+  --z1:#4FBF92; --z2:#9BC452; --z3:#E8B347; --z4:#F08550; --z5:#EE5B64; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.2}
+.num{font-family:var(--display);font-variant-numeric:tabular-nums}
+
+header{display:flex;flex-direction:column;gap:6px}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand h1{font-size:2.1rem;letter-spacing:.01em}
+.brand .tag{font-family:var(--display);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header p{margin:0;color:var(--muted);max-width:60ch}
+
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:5px}
+.tab{appearance:none;border:0;background:transparent;color:var(--muted);font:600 .95rem var(--body);padding:10px 6px;border-radius:8px;cursor:pointer;line-height:1.3}
+.tab small{display:block;font-weight:400;font-size:.75rem}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tab:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:16px}
+.how{margin:0;color:var(--muted);font-size:.92rem}
+.how b{color:var(--ink);font-weight:600}
+.fields{display:flex;flex-wrap:wrap;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.field .hint{font-size:.78rem;color:var(--muted)}
+input,select{font:600 1.15rem var(--display);font-variant-numeric:tabular-nums;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%}
+select{font-family:var(--body);font-size:1rem}
+.time{display:flex;align-items:center;gap:6px}
+.time input{width:4.6em;text-align:center}
+.time span{font:700 1.2rem var(--display);color:var(--muted)}
+.err{color:var(--z5);font-size:.9rem;margin:0}
+
+/* readout */
+.readout{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;background:var(--ink);color:var(--bg);border-radius:14px;padding:20px 22px}
+.readout .lbl{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7}
+.readout .big{font:700 4rem/1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.readout .side{display:flex;flex-wrap:wrap;gap:8px 22px;min-width:0}
+.readout .side div{display:flex;flex-direction:column}
+.readout .side .v{font:600 1.25rem var(--display);font-variant-numeric:tabular-nums}
+.readout .side .k{font-size:.78rem;opacity:.7}
+
+/* pace lanes */
+.lanes{display:flex;flex-direction:column;gap:10px}
+.lane{display:grid;grid-template-columns:6px 1fr auto;gap:0 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px 14px 0;overflow:hidden}
+.lane .bar{border-radius:0 4px 4px 0;background:var(--c)}
+.lane .info{min-width:0;display:flex;flex-direction:column;gap:2px}
+.lane .name{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.lane .code{font:700 1rem var(--display);color:var(--c)}
+.lane h3{font-size:1.05rem}
+.lane .use{font-size:.86rem;color:var(--muted)}
+.lane .pace{text-align:right;display:flex;flex-direction:column;align-items:flex-end;justify-content:center}
+.lane .pace .p{font:700 1.45rem/1.1 var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lane .pace .u{font-size:.78rem;color:var(--muted);white-space:nowrap}
+
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-head h2{font-size:1.3rem}
+.sec-head span{font-size:.85rem;color:var(--muted)}
+
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:380px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.num{font-size:1.05rem}
+td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:8px}
+
+.note{font-size:.85rem;color:var(--muted);margin:0;max-width:65ch}
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+
+@media (max-width:520px){
+  .readout{grid-template-columns:1fr;gap:14px}
+  .readout .big{font-size:3.4rem}
+  .lane .pace .p{font-size:1.2rem}
+  .brand h1{font-size:1.8rem}
+}
+@media (prefers-reduced-motion:no-preference){.lane,.readout{transition:background .2s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand"><h1>Pace Lab</h1><span class="tag">Training pace calculator</span></div>
+  <p>เลือกวิธีเทส ใส่ผล แล้วได้ pace ซ้อมแต่ละโซนทันที ใช้สูตร VDOT ของ Jack Daniels เป็นแกนกลาง ทุกเทสคำนวณมาเป็นตัวเลขชุดเดียวกัน</p>
+</header>
+
+<div class="tabs" role="tablist" aria-label="วิธีเทส">
+  <button class="tab" role="tab" id="tab-race" aria-selected="true" data-t="race">เทสวิ่ง 3K/5K<small>VDOT</small></button>
+  <button class="tab" role="tab" id="tab-lt" aria-selected="false" data-t="lt">Lactate Threshold<small>วิ่ง 30 นาที</small></button>
+  <button class="tab" role="tab" id="tab-cooper" aria-selected="false" data-t="cooper">Cooper<small>วิ่ง 12 นาที</small></button>
+</div>
+
+<section class="panel" id="p-race">
+  <p class="how"><b>วิธีเทส:</b> วอร์มอัพ 15 นาที แล้ววิ่งเต็มที่ระยะที่เลือก (หรือใช้ผลงานแข่งล่าสุดภายใน 6–8 สัปดาห์) ใส่เวลาที่ทำได้</p>
+  <div class="fields">
+    <div class="field" style="flex:1 1 160px">
+      <label for="race-dist">ระยะ</label>
+      <select id="race-dist">
+        <option value="1609.34">1 ไมล์</option>
+        <option value="3000">3 กม.</option>
+        <option value="5000" selected>5 กม.</option>
+        <option value="10000">10 กม.</option>
+        <option value="21097.5">ฮาล์ฟมาราธอน</option>
+        <option value="42195">มาราธอน</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>เวลา (ชม. : นาที : วินาที)</label>
+      <div class="time">
+        <input id="race-h" type="number" inputmode="numeric" min="0" value="0" aria-label="ชั่วโมง"><span>:</span>
+        <input id="race-m" type="number" inputmode="numeric" min="0" max="59" value="24" aria-label="นาที"><span>:</span>
+        <input id="race-s" type="number" inputmode="numeric" min="0" max="59" value="30" aria-label="วินาที">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="p-lt" hidden>
+  <p class="how"><b>วิธีเทส (Joe Friel):</b> วอร์มอัพ 15 นาที แล้ววิ่งคนเดียวเต็มที่ 30 นาที กด lap ที่นาทีที่ 10 จดระยะทางทั้งหมด และ<b>ชีพจรเฉลี่ย 20 นาทีสุดท้าย</b> = LTHR</p>
+  <div class="fields">
+    <div class="field" style="flex:1 1 160px">
+      <label for="lt-dist">ระยะที่วิ่งได้ใน 30 นาที (กม.)</label>
+      <input id="lt-dist" type="number" inputmode="decimal" step="0.01" min="1" value="6.1">
+    </div>
+    <div class="field" style="flex:1 1 160px">
+      <label for="lt-hr">ชีพจรเฉลี่ย 20 นาทีหลัง (bpm)</label>
+      <input id="lt-hr" type="number" inputmode="numeric" min="100" max="220" value="172">
+      <span class="hint">ไม่ใส่ก็ได้ ถ้าไม่มีนาฬิกาวัดชีพจร</span>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="p-cooper" hidden>
+  <p class="how"><b>วิธีเทส:</b> วอร์มอัพ แล้ววิ่งให้ได้ไกลที่สุดใน 12 นาที (ลู่ 400 ม. สะดวกที่สุด) จดระยะเป็นเมตร</p>
+  <div class="fields">
+    <div class="field" style="flex:1 1 200px">
+      <label for="cp-dist">ระยะที่วิ่งได้ใน 12 นาที (เมตร)</label>
+      <input id="cp-dist" type="number" inputmode="numeric" min="800" step="10" value="2750">
+    </div>
+  </div>
+</section>
+
+<p class="err" id="err" hidden></p>
+
+<div id="results">
+  <div class="readout" aria-live="polite">
+    <div>
+      <div class="lbl">VDOT</div>
+      <div class="big" id="o-vdot">–</div>
+    </div>
+    <div class="side" id="o-side"></div>
+  </div>
+</div>
+
+<div class="sec-head"><h2>Pace ซ้อม</h2><span>ต่อกิโลเมตร · ต่อรอบลู่ 400 ม.</span></div>
+<div class="lanes" id="o-lanes"></div>
+
+<div id="hr-block" hidden>
+  <div class="sec-head" style="margin-bottom:10px"><h2>โซนชีพจร</h2><span>จาก LTHR ตามสูตร Friel</span></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>โซน</th><th>ชีพจร (bpm)</th><th>ความรู้สึก</th></tr></thead>
+    <tbody id="o-hr"></tbody>
+  </table></div>
+</div>
+
+<div>
+  <div class="sec-head" style="margin-bottom:10px"><h2>เวลาแข่งที่คาดว่าทำได้</h2><span>ถ้าซ้อมเฉพาะระยะนั้นมาพอ</span></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>ระยะ</th><th>เวลา</th><th>Pace / กม.</th></tr></thead>
+    <tbody id="o-pred"></tbody>
+  </table></div>
+</div>
+
+<p class="note">ตัวเลขเป็นจุดเริ่มต้น ไม่ใช่กฎตายตัว วันร้อนหรือชื้นแบบกรุงเทพฯ ให้ช้าลง 10–20 วินาที/กม. โดยเฉพาะ Easy และ Marathon ควรเทสซ้ำทุก 4–6 สัปดาห์</p>
+
+<footer>สูตร: Daniels &amp; Gilbert (VDOT), Friel (LTHR zones). Cooper เทียบเป็น VDOT ด้วยสูตรเดียวกัน (12 นาทีเต็มที่)</footer>
+</div>
+
+<script>
+(function(){
+  // ---- Daniels & Gilbert ----
+  const vo2 = v => -4.60 + 0.182258*v + 0.000104*v*v;              // v in m/min
+  const pctMax = t => 0.8 + 0.1894393*Math.exp(-0.012778*t) + 0.2989558*Math.exp(-0.1932605*t); // t in min
+  const vdotOf = (d,t) => vo2(d/t) / pctMax(t);
+  const velAt = V => (-0.182258 + Math.sqrt(0.182258**2 + 4*0.000104*(4.60+V))) / (2*0.000104);
+  function predict(V, d){ let lo=0.5, hi=900; for(let i=0;i<70;i++){ const m=(lo+hi)/2; (vdotOf(d,m)>V)?lo=m:hi=m; } return (lo+hi)/2; }
+
+  // ---- formatting ----
+  function fmt(sec){ sec=Math.round(sec); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60;
+    return h ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${m}:${String(s).padStart(2,'0')}`; }
+  const secPerKm = v => 1000/v*60;          // v m/min
+  const per400 = v => 400/v*60;
+  const $ = id => document.getElementById(id);
+
+  let mode = 'race';
+  try{ const s = localStorage.getItem('pacelab-mode'); if (s) mode = s; }catch(e){}
+
+  function setMode(m){
+    mode = m;
+    document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', b.dataset.t===m));
+    ['race','lt','cooper'].forEach(k => $('p-'+k).hidden = k!==m);
+    try{ localStorage.setItem('pacelab-mode', m); }catch(e){}
+    calc();
+  }
+  document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => setMode(b.dataset.t)));
+  document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', calc));
+
+  function num(id){ const v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+
+  function calc(){
+    let d, tMin, side=[], err='';
+    if (mode==='race'){
+      d = parseFloat($('race-dist').value);
+      tMin = num('race-h')*60 + num('race-m') + num('race-s')/60;
+      if (tMin <= 0) err = 'ใส่เวลาที่วิ่งได้ก่อน';
+      else side.push(['Pace เทส', fmt(tMin*60/(d/1000)) + ' /กม.']);
+    } else if (mode==='lt'){
+      d = num('lt-dist')*1000; tMin = 30;
+      if (d < 1000) err = 'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)';
+      else side.push(['Threshold pace (ผลเทส)', fmt(1800/(d/1000)) + ' /กม.']);
+      const hr = num('lt-hr');
+      if (hr >= 100) side.push(['LTHR', Math.round(hr) + ' bpm']);
+    } else {
+      d = num('cp-dist'); tMin = 12;
+      if (d < 800) err = 'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)';
+      else side.push(['VO₂max (สูตร Cooper)', ((d-504.9)/44.73).toFixed(1)]);
+    }
+
+    const V = err ? NaN : vdotOf(d, tMin);
+    if (!err && (V < 20 || V > 90)) err = 'ผลเทสอยู่นอกช่วงที่สูตรใช้ได้ ลองเช็กตัวเลขอีกครั้ง';
+    $('err').hidden = !err; $('err').textContent = err;
+    if (err){ $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
+
+    $('o-vdot').textContent = V.toFixed(1);
+    $('o-side').innerHTML = side.map(([k,v]) => `<div><span class="v">${v}</span><span class="k">${k}</span></div>`).join('');
+
+    const vE1 = velAt(V*0.65), vE2 = velAt(V*0.74);
+    const vM = 42195/predict(V,42195), vT = velAt(V*0.88), vI = velAt(V*0.975), vR = 1609.34/predict(V,1609.34);
+    const lanes = [
+      ['E','Easy','วิ่งสบาย คุยได้ วิ่งยาว ฟื้นตัว ~70–80% ของระยะซ้อมทั้งสัปดาห์', 'var(--z1)', `${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, '/กม.'],
+      ['M','Marathon','pace มาราธอน ใช้ในวิ่งยาวช่วงท้ายหรือ tempo ยาว', 'var(--z2)', fmt(secPerKm(vM)), '/กม.'],
+      ['T','Threshold','เหนื่อยแบบคุมได้ 20 นาทีต่อเนื่อง หรือ 4–5 × 1 กม. พัก 1 นาที', 'var(--z3)', fmt(secPerKm(vT)), `/กม. · ${fmt(per400(vT))} /400ม.`],
+      ['I','Interval','VO₂max เช่น 5 × 1,000 ม. พักจ็อกเท่าเวลาวิ่ง', 'var(--z4)', fmt(secPerKm(vI)), `/กม. · ${fmt(per400(vI))} /400ม.`],
+      ['R','Repetition','ความเร็ว ฟอร์ม เช่น 8 × 400 ม. พักเต็มที่', 'var(--z5)', fmt(per400(vR)), `/400ม. · ${fmt(secPerKm(vR))} /กม.`],
+    ];
+    $('o-lanes').innerHTML = lanes.map(([c,n,u,col,p,unit]) =>
+      `<div class="lane" style="--c:${col}"><div class="bar"></div>
+        <div class="info"><div class="name"><span class="code">${c}</span><h3>${n}</h3></div><div class="use">${u}</div></div>
+        <div class="pace"><span class="p">${p}</span><span class="u">${unit}</span></div></div>`).join('');
+
+    const races = [['1 ไมล์',1609.34],['3 กม.',3000],['5 กม.',5000],['10 กม.',10000],['ฮาล์ฟมาราธอน',21097.5],['มาราธอน',42195]];
+    $('o-pred').innerHTML = races.map(([n,dd]) => { const t = predict(V,dd)*60;
+      return `<tr><td>${n}</td><td class="num">${fmt(t)}</td><td class="num">${fmt(t/(dd/1000))}</td></tr>`; }).join('');
+
+    const hr = num('lt-hr');
+    const showHr = mode==='lt' && hr >= 100;
+    $('hr-block').hidden = !showHr;
+    if (showHr){
+      const z = [['Z1','var(--z1)',0,.85,'ฟื้นตัว เบามาก'],['Z2','var(--z1)',.85,.89,'Aerobic / Easy'],['Z3','var(--z2)',.90,.94,'Tempo'],
+                 ['Z4','var(--z3)',.95,.99,'ใต้ threshold'],['Z5a','var(--z4)',1.00,1.02,'Threshold'],['Z5b','var(--z4)',1.03,1.06,'Aerobic capacity'],['Z5c','var(--z5)',1.06,null,'Anaerobic']];
+      $('o-hr').innerHTML = z.map(([n,c,a,b,f]) => {
+        const r = a===0 ? `ต่ำกว่า ${Math.round(hr*b)}` : b===null ? `มากกว่า ${Math.round(hr*a)}` : `${Math.round(hr*a)}–${Math.round(hr*b)}`;
+        return `<tr><td style="--c:${c}"><span class="dot"></span>${n}</td><td class="num">${r}</td><td>${f}</td></tr>`; }).join('');
+    }
+  }
+
+  setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
+})();
+</script>
+</body>
+</html>
