@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pace Lab</title>
 <meta name="description" content="คำนวณ pace ซ้อมวิ่งจากผลเทส 3K/5K (VDOT), เทส Lactate Threshold 30 นาที และ Cooper 12 นาที">
+<link rel="canonical" href="https://pace.runnear.me/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Runnear.me">
+<meta property="og:url" content="https://pace.runnear.me/">
+<meta property="og:title" content="Pace Lab · คำนวณ pace ซ้อมวิ่งจากผลเทส">
+<meta property="og:description" content="ใส่ผลเทส 3K/5K, Lactate Threshold หรือ Cooper แล้วได้ pace ซ้อม Easy, Marathon, Threshold, Interval, Rep พร้อมตารางซ้อมรายสัปดาห์ ฟรี">
+<meta property="og:image" content="https://pace.runnear.me/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pace Lab ตัวอย่าง pace ซ้อม 5 โซนที่ VDOT 50">
+<meta property="og:locale" content="th_TH">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pace.runnear.me/og-image.png">
+<meta name="theme-color" content="#101A2B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101A2B'/%3E%3Crect x='14' y='14' width='6' height='36' rx='3' fill='%234FBF92'/%3E%3Crect x='26' y='22' width='6' height='28' rx='3' fill='%23E8B347'/%3E%3Crect x='38' y='30' width='6' height='20' rx='3' fill='%23F08550'/%3E%3Crect x='50' y='38' width='6' height='12' rx='3' fill='%23EE5B64'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Anuphan:wght@400;500;600&display=swap">
@@ -355,7 +370,7 @@ footer a{color:var(--accent)}
     $('o-vdot').textContent = V.toFixed(1);
     $('o-side').innerHTML = side.map(([k,v]) => `<div><span class="v">${v}</span><span class="k">${k}</span></div>`).join('');
 
-    const vE1 = velAt(V*0.65), vE2 = velAt(V*0.74);
+    const vE1 = velAt(V*0.59), vE2 = velAt(V*0.67);
     const vM = 42195/predict(V,42195), vT = velAt(V*0.88), vI = velAt(V*0.975), vR = 1609.34/predict(V,1609.34);
     const lanes = [
       ['E','Easy','วิ่งสบาย คุยได้ วิ่งยาว ฟื้นตัว ~70–80% ของระยะซ้อมทั้งสัปดาห์', 'var(--z1)', `${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, '/กม.'],
