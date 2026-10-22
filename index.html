@@ -473,6 +473,18 @@ footer a{color:var(--accent)}
 
   document.querySelectorAll('.gear img').forEach(img => img.addEventListener('error', () => { img.hidden = true; }));
 
+  // Google Analytics events
+  const track = (name, params) => { try { if (typeof gtag === 'function') gtag('event', name, params); } catch(e){} };
+  document.querySelectorAll('a.gear').forEach(a => a.addEventListener('click', () =>
+    track('affiliate_click', { item: a.dataset.gear, placement: a.classList.contains('inline') ? 'lt_test' : 'training_guide' })));
+  document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => track('select_test', { test: b.dataset.t })));
+  document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => track('select_plan', { days: +b.dataset.d })));
+  let calcTimer;
+  document.querySelectorAll('.panel input, .panel select').forEach(el => el.addEventListener('input', () => {
+    clearTimeout(calcTimer);
+    calcTimer = setTimeout(() => { const v = parseFloat($('o-vdot').textContent); if (v) track('calculate', { test: mode, vdot: Math.round(v) }); }, 1500);
+  }));
+
   setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
 })();
 </script>
