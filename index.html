@@ -213,10 +213,11 @@ footer a{color:var(--accent)}
     <div class="field">
       <label>เวลา (ชม. : นาที : วินาที)</label>
       <div class="time">
-        <input id="race-h" type="number" inputmode="numeric" min="0" value="0" aria-label="ชั่วโมง"><span>:</span>
-        <input id="race-m" type="number" inputmode="numeric" min="0" max="59" value="24" aria-label="นาที"><span>:</span>
-        <input id="race-s" type="number" inputmode="numeric" min="0" max="59" value="30" aria-label="วินาที">
+        <input id="race-h" type="number" inputmode="numeric" min="0" max="9" step="1" value="0" aria-label="ชั่วโมง"><span>:</span>
+        <input id="race-m" type="number" inputmode="numeric" min="0" max="59" step="1" value="24" aria-label="นาที"><span>:</span>
+        <input id="race-s" type="number" inputmode="numeric" min="0" max="59" step="1" value="30" aria-label="วินาที">
       </div>
+      <span class="hint" id="time-fix" hidden></span>
     </div>
   </div>
 </section>
@@ -380,13 +381,32 @@ footer a{color:var(--accent)}
   document.querySelectorAll('input,select').forEach(el => el.addEventListener('input', calc));
 
   function num(id){ const v = parseFloat($(id).value); return isNaN(v) ? 0 : v; }
+  // total seconds from the h:m:s boxes; whole numbers only
+  function raceSeconds(){ return Math.round(num('race-h')*3600 + num('race-m')*60 + num('race-s')); }
+  // when the runner leaves a box, carry 60+ minutes/seconds into the next unit (0:75:00 -> 1:15:00)
+  function tidyTime(){
+    const raw = ['race-h','race-m','race-s'].map(id => $(id).value);
+    if (['race-h','race-m','race-s'].some(id => num(id) < 0)) { $('time-fix').hidden = true; return; }
+    let t = raceSeconds();
+    const h = Math.floor(t/3600), m = Math.floor(t%3600/60), sec = t%60;
+    const next = [h, m, sec].map(String);
+    const changed = next.some((v,i) => String(parseFloat(raw[i]) || 0) !== v);
+    $('race-h').value = h; $('race-m').value = m; $('race-s').value = sec;
+    const note = $('time-fix');
+    note.hidden = !changed;
+    if (changed) note.textContent = `ปรับเป็น ${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')} ให้แล้ว (นาทีและวินาทีใส่ได้ 0–59)`;
+    calc();
+  }
+  ['race-h','race-m','race-s'].forEach(id => $(id).addEventListener('change', tidyTime));
 
   function calc(){
     let d, tMin, side=[], err='';
     if (mode==='race'){
       d = parseFloat($('race-dist').value);
-      tMin = num('race-h')*60 + num('race-m') + num('race-s')/60;
-      if (tMin <= 0) err = 'ใส่เวลาที่วิ่งได้ก่อน';
+      const ts = raceSeconds();
+      tMin = ts/60;
+      if (ts <= 0) err = 'ใส่เวลาที่วิ่งได้ก่อน';
+      else if (num('race-h') < 0 || num('race-m') < 0 || num('race-s') < 0) err = 'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง';
       else side.push(['Pace เทส', fmt(tMin*60/(d/1000)) + ' /กม.']);
     } else if (mode==='lt'){
       d = num('lt-dist')*1000; tMin = 30;
