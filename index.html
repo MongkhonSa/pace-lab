@@ -143,6 +143,20 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .wo li{margin:2px 0}
 .wo .tip{font-size:.82rem;color:var(--muted)}
 .wo b{font-family:var(--display);font-variant-numeric:tabular-nums}
+
+/* gear (affiliate) */
+.gear-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.aff{font-size:.72rem;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.gear-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.gear{display:flex;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-decoration:none;color:var(--ink);min-width:0;transition:border-color .15s}
+.gear:hover{border-color:var(--accent)}
+.gear:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.gear img{width:64px;height:64px;object-fit:cover;border-radius:8px;background:#fff;flex:none}
+.gear .gt{min-width:0;display:flex;flex-direction:column;gap:1px}
+.gear .gn{font-weight:600;font-size:.92rem;line-height:1.35}
+.gear .gw{font-size:.8rem;color:var(--muted);line-height:1.4}
+.gear .go{font-size:.78rem;color:var(--accent);font-weight:600}
+.gear.inline{background:var(--bg)}
 footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:18px}
 footer h2{font-size:1rem;color:var(--ink);margin-bottom:6px}
 footer ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
@@ -150,16 +164,6 @@ footer a{color:var(--accent)}
 .credit{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
 .credit .by{font-size:.95rem;color:var(--ink)}
 .credit .by b{font-family:var(--display)}
-.tip-jar{display:flex;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;flex-wrap:wrap}
-.tip-jar img{width:180px;height:auto;max-width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
-.tj-text{flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.tj-text h2{font-size:1.1rem;margin:0}
-.tj-text p{margin:0;color:var(--muted)}
-.tj-how{font-size:.8rem}
-@media (max-width:520px){.tip-jar img{width:100%;max-width:260px;margin:0 auto}}
-.coffee{display:inline-flex;align-items:center;gap:8px;background:#FFDD00;color:#1A1A1A;font:600 .95rem var(--body);text-decoration:none;padding:9px 16px;border-radius:999px}
-.coffee:hover{filter:brightness(.95)}
-.coffee:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 @media (max-width:520px){
   .readout{grid-template-columns:1fr;gap:14px}
@@ -222,6 +226,10 @@ footer a{color:var(--accent)}
       <span class="hint">ไม่ใส่ก็ได้ ถ้าไม่มีนาฬิกาวัดชีพจร</span>
     </div>
   </div>
+  <a class="gear inline" href="https://s.shopee.co.th/3B8NQs07XC" target="_blank" rel="sponsored noopener" data-gear="garmin-fr165">
+    <img src="https://down-th.img.susercontent.com/file/th-11134207-81zti-mkxh8396fu2s82" alt="" loading="lazy" width="64" height="64">
+    <span class="gt"><span class="gn">ยังไม่มีนาฬิกาวัดชีพจร? Garmin Forerunner 165</span><span class="gw">วัดชีพจรจากข้อมือ จับ lap และบันทึกเทส 30 นาทีได้ในตัว</span><span class="go">ดูใน Shopee → <span class="aff">ลิงก์ affiliate</span></span></span>
+  </a>
 </section>
 
 <section class="panel" id="p-cooper" hidden>
@@ -287,6 +295,26 @@ footer a{color:var(--accent)}
     <tbody id="o-week"></tbody>
   </table></div>
 
+  <div class="gear-head"><h3 style="font-size:1.1rem">ของที่ใช้จริงในวันซ้อม</h3><span class="aff">ลิงก์ affiliate · ซื้อผ่านลิงก์ช่วยสนับสนุนเว็บ</span></div>
+  <div class="gear-grid">
+    <a class="gear" href="https://s.shopee.co.th/5AtRoLxQHA" target="_blank" rel="sponsored noopener" data-gear="aminovital-gel">
+      <img src="https://down-th.img.susercontent.com/file/sg-11134201-8258r-mukx4hc80cn9a3" alt="" loading="lazy" width="64" height="64">
+      <span class="gt"><span class="gn">aminoVITAL Red Shot เจลพลังงาน</span><span class="gw">วันวิ่งยาวเกิน 60–75 นาที กินทุก 30–45 นาที</span><span class="go">ดูใน Shopee →</span></span>
+    </a>
+    <a class="gear" href="https://s.shopee.co.th/8V9tmka9al" target="_blank" rel="sponsored noopener" data-gear="gq-shorts">
+      <img src="https://down-th.img.susercontent.com/file/th-11134207-81ztn-mjip1wz0wt8m9e" alt="" loading="lazy" width="64" height="64">
+      <span class="gt"><span class="gn">GQ Lightning กางเกงวิ่งขาสั้น</span><span class="gw">ผ้าเบา ไม่ถ่วงขาในวัน Interval และ Rep</span><span class="go">ดูใน Shopee →</span></span>
+    </a>
+    <a class="gear" href="https://s.shopee.co.th/1W09Rw8SUC" target="_blank" rel="sponsored noopener" data-gear="gq-shirt">
+      <img src="https://down-th.img.susercontent.com/file/th-11134207-81zth-mjip0026tgquda" alt="" loading="lazy" width="64" height="64">
+      <span class="gt"><span class="gn">GQ Votex-T เสื้อวิ่ง</span><span class="gw">ระบายเหงื่อ เหมาะกับวิ่งยาวในอากาศร้อนชื้น</span><span class="go">ดูใน Shopee →</span></span>
+    </a>
+    <a class="gear" href="https://s.shopee.co.th/80DdBvLP3W" target="_blank" rel="sponsored noopener" data-gear="sunglasses">
+      <img src="https://down-th.img.susercontent.com/file/sg-11134201-8262x-mkc9jkxdhuyoca" alt="" loading="lazy" width="64" height="64">
+      <span class="gt"><span class="gn">แว่นกันแดดสำหรับวิ่ง</span><span class="gw">ลดแสงจ้าตอนวิ่งกลางแจ้ง เช้าและเย็น</span><span class="go">ดูใน Shopee →</span></span>
+    </a>
+  </div>
+
   <h3 style="font-size:1.1rem">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
   <div class="lib" id="o-lib"></div>
   <p class="note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
@@ -297,14 +325,6 @@ footer a{color:var(--accent)}
 <footer>
   <div class="credit">
     <span class="by">ทำโดย <a href="https://runnear.me"><b>Runnear.me</b></a></span>
-  </div>
-  <div class="tip-jar">
-    <img src="promptpay-qr.jpg" width="600" height="558" alt="QR พร้อมเพย์ สำหรับเลี้ยงกาแฟ Runnear.me" loading="lazy">
-    <div class="tj-text">
-      <h2>☕ เลี้ยงกาแฟสักแก้ว</h2>
-      <p>ถ้าเว็บนี้ช่วยให้ซ้อมง่ายขึ้น สนับสนุน Runnear.me ได้ผ่านพร้อมเพย์ ทุกบาทช่วยให้ทำเครื่องมือฟรีสำหรับนักวิ่งต่อไป</p>
-      <p class="tj-how">เปิดบนมือถือ? แคปหน้าจอ แล้วเลือก "สแกนจากรูป" ในแอปธนาคารหรือทรูมันนี่</p>
-    </div>
   </div>
   <div>
     <h2>อ้างอิง</h2>
@@ -450,6 +470,8 @@ footer a{color:var(--accent)}
   document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
     days = +b.dataset.d; try{ localStorage.setItem('pacelab-days', days); }catch(e){} renderGuide();
   }));
+
+  document.querySelectorAll('.gear img').forEach(img => img.addEventListener('error', () => { img.hidden = true; }));
 
   setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
 })();
