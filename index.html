@@ -156,7 +156,15 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .gear .gn{font-weight:600;font-size:.92rem;line-height:1.35}
 .gear .gw{font-size:.8rem;color:var(--muted);line-height:1.4}
 .gear .go{font-size:.78rem;color:var(--accent);font-weight:600}
-.gear.inline{background:var(--bg)}
+.gear-wrap{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.gear-line{margin:0;font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 6px;align-items:baseline}
+.gear-line .gear-link{color:var(--accent);font-weight:600;text-decoration:none}
+.gear-line .gear-link:hover{text-decoration:underline}
+.gl-aff{font-size:.75rem}
+@media (max-width:620px){
+  .gear-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:6px;margin-inline:-4px;padding-inline:4px;scrollbar-width:thin}
+  .gear-grid .gear{flex:0 0 72%;scroll-snap-align:start}
+}
 footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:18px;display:flex;flex-direction:column;gap:18px}
 footer h2{font-size:1rem;color:var(--ink);margin-bottom:6px}
 footer ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
@@ -226,10 +234,7 @@ footer a{color:var(--accent)}
       <span class="hint">ไม่ใส่ก็ได้ ถ้าไม่มีนาฬิกาวัดชีพจร</span>
     </div>
   </div>
-  <a class="gear inline" href="https://s.shopee.co.th/3B8NQs07XC" target="_blank" rel="sponsored noopener" data-gear="garmin-fr165">
-    <img src="https://down-th.img.susercontent.com/file/th-11134207-81zti-mkxh8396fu2s82" alt="" loading="lazy" width="64" height="64">
-    <span class="gt"><span class="gn">ยังไม่มีนาฬิกาวัดชีพจร? Garmin Forerunner 165</span><span class="gw">วัดชีพจรจากข้อมือ จับ lap และบันทึกเทส 30 นาทีได้ในตัว</span><span class="go">ดูใน Shopee → <span class="aff">ลิงก์ affiliate</span></span></span>
-  </a>
+  <p class="gear-line">ยังไม่มีนาฬิกาวัดชีพจร? <a class="gear-link" href="https://s.shopee.co.th/3B8NQs07XC" target="_blank" rel="sponsored noopener" data-gear="garmin-fr165">ดู Garmin Forerunner 165 →</a><span class="gl-aff">(ลิงก์ affiliate)</span></p>
 </section>
 
 <section class="panel" id="p-cooper" hidden>
@@ -295,7 +300,11 @@ footer a{color:var(--accent)}
     <tbody id="o-week"></tbody>
   </table></div>
 
-  <div class="gear-head"><h3 style="font-size:1.1rem">ของที่ใช้จริงในวันซ้อม</h3><span class="aff">ลิงก์ affiliate · ซื้อผ่านลิงก์ช่วยสนับสนุนเว็บ</span></div>
+  <h3 style="font-size:1.1rem">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
+  <div class="lib" id="o-lib"></div>
+  <p class="note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
+  <div class="gear-wrap">
+  <div class="gear-head"><h3 style="font-size:1.1rem">อุปกรณ์แนะนำ</h3><span class="aff">ลิงก์ affiliate · ซื้อผ่านลิงก์ช่วยสนับสนุนเว็บ</span></div>
   <div class="gear-grid">
     <a class="gear" href="https://s.shopee.co.th/5AtRoLxQHA" target="_blank" rel="sponsored noopener" data-gear="aminovital-gel">
       <img src="https://down-th.img.susercontent.com/file/sg-11134201-8258r-mukx4hc80cn9a3" alt="" loading="lazy" width="64" height="64">
@@ -314,10 +323,7 @@ footer a{color:var(--accent)}
       <span class="gt"><span class="gn">แว่นกันแดดสำหรับวิ่ง</span><span class="gw">ลดแสงจ้าตอนวิ่งกลางแจ้ง เช้าและเย็น</span><span class="go">ดูใน Shopee →</span></span>
     </a>
   </div>
-
-  <h3 style="font-size:1.1rem">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
-  <div class="lib" id="o-lib"></div>
-  <p class="note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
+  </div>
 </section>
 
 <p class="note">ตัวเลขเป็นจุดเริ่มต้น ไม่ใช่กฎตายตัว วันร้อนหรือชื้นแบบกรุงเทพฯ ให้ช้าลง 10–20 วินาที/กม. โดยเฉพาะ Easy และ Marathon ควรเทสซ้ำทุก 4–6 สัปดาห์</p>
@@ -475,8 +481,8 @@ footer a{color:var(--accent)}
 
   // Google Analytics events
   const track = (name, params) => { try { if (typeof gtag === 'function') gtag('event', name, params); } catch(e){} };
-  document.querySelectorAll('a.gear').forEach(a => a.addEventListener('click', () =>
-    track('affiliate_click', { item: a.dataset.gear, placement: a.classList.contains('inline') ? 'lt_test' : 'training_guide' })));
+  document.querySelectorAll('a[data-gear]').forEach(a => a.addEventListener('click', () =>
+    track('affiliate_click', { item: a.dataset.gear, placement: a.classList.contains('gear-link') ? 'lt_test' : 'training_guide' })));
   document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => track('select_test', { test: b.dataset.t })));
   document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => track('select_plan', { days: +b.dataset.d })));
   let calcTimer;
