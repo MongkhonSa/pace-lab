@@ -621,7 +621,7 @@ footer a{color:var(--accent)}
 
     $('o-vdot').textContent = V.toFixed(1);
     { const q = mode === 'race' ? `test=race&d=${$('race-dist').value}&t=${raceSeconds()}`
-              : mode === 'lt' ? `test=lt&d=${Math.round(num('lt-dist')*1000)}` : `test=cooper&d=${Math.round(num('cp-dist'))}`;
+              : mode === 'lt' ? `test=lt&d=${Math.round(num('lt-dist')*1000)}${num('lt-hr') >= 100 && num('lt-hr') <= 220 ? `&hr=${Math.round(num('lt-hr'))}` : ''}` : `test=cooper&d=${Math.round(num('cp-dist'))}`;
       $('save-rnm').href = rnmUrl('/pace/save?' + q, 'save_pace'); }
     $('o-side').innerHTML = side.map(([k,v]) => `<div><span class="v">${v}</span><span class="k">${k}</span></div>`).join('');
 
