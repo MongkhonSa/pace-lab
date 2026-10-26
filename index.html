@@ -153,6 +153,18 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .wo .tip{font-size:.82rem;color:var(--muted)}
 .wo b{font-family:var(--display);font-variant-numeric:tabular-nums}
 
+/* RunNearMe links */
+.rnm-cta{display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:end;text-decoration:none;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.rnm-cta:hover{border-color:var(--accent)}
+.rnm-cta:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rnm-k{grid-column:1/-1;font:700 .72rem var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.rnm-t{grid-column:1/-1;font-weight:600;font-size:1.05rem;line-height:1.35}
+.rnm-d{font-size:.86rem;color:var(--muted);min-width:0}
+.rnm-go{font-weight:600;color:var(--accent);white-space:nowrap}
+.rnm-alt{background:var(--surface)}
+.rnm-inline{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
+.rnm-inline:hover{text-decoration:underline}
+@media (max-width:520px){.rnm-cta{grid-template-columns:1fr}.rnm-go{margin-top:6px}}
 /* gear (affiliate) */
 .gear-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .aff{font-size:.72rem;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
@@ -276,6 +288,12 @@ footer a{color:var(--accent)}
 
 <div class="sec-head"><h2 data-i18n="pace.h">Pace ซ้อม</h2><span data-i18n="pace.sub">ต่อกิโลเมตร · ต่อรอบลู่ 400 ม.</span></div>
 <div class="lanes" id="o-lanes"></div>
+<a class="rnm-cta" data-rnm="/search?sort=near" data-place="after_paces" target="_blank" rel="noopener">
+  <span class="rnm-k">RunNearMe</span>
+  <span class="rnm-t" data-i18n="rnm.t">รู้ pace แล้ว วันนี้ไปวิ่งที่ไหนดี?</span>
+  <span class="rnm-d" data-i18n="rnm.d">รวมสวนวิ่งในกรุงเทพฯ พร้อมระยะเส้นทาง น้ำดื่ม ห้องน้ำ ล็อกเกอร์ เวลาเปิดปิด และการเดินทางด้วย BTS/MRT</span>
+  <span class="rnm-go" data-i18n="rnm.go">หาสวนใกล้คุณ →</span>
+</a>
 
 <div id="hr-block" hidden>
   <div class="sec-head" style="margin-bottom:10px"><h2 data-i18n="hr.h">โซนชีพจร</h2><span data-i18n="hr.sub">จาก LTHR ตามสูตร Friel</span></div>
@@ -318,6 +336,12 @@ footer a{color:var(--accent)}
   <h3 style="font-size:1.1rem" data-i18n="lib.h">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
   <div class="lib" id="o-lib"></div>
   <p class="note" data-i18n="lib.note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
+  <a class="rnm-cta rnm-alt" data-rnm="/create" data-place="share_route" target="_blank" rel="noopener">
+    <span class="rnm-k">RunNearMe</span>
+    <span class="rnm-t" data-i18n="rnm2.t">วิ่งเทสหรือวิ่งยาวที่สวนไหน? แชร์เส้นทางให้นักวิ่งคนอื่น</span>
+    <span class="rnm-d" data-i18n="rnm2.d">อัปโหลดไฟล์ .fit / .gpx จาก Garmin หรือวาดเส้นทางบนแผนที่ ฟรี เข้าสู่ระบบด้วยบัญชี Google</span>
+    <span class="rnm-go" data-i18n="rnm2.go">เพิ่มเส้นทาง →</span>
+  </a>
   <div class="gear-wrap">
   <div class="gear-head"><h3 style="font-size:1.1rem" data-i18n="gear.h">อุปกรณ์แนะนำ</h3><span class="aff" data-i18n="gear.aff">ลิงก์ affiliate · ซื้อผ่านลิงก์ช่วยสนับสนุนเว็บ</span></div>
   <div class="gear-grid">
@@ -349,7 +373,7 @@ footer a{color:var(--accent)}
 
 <footer>
   <div class="credit">
-    <span class="by"><span data-i18n="ft.by">ทำโดย</span> <a href="https://runnear.me"><b>Runnear.me</b></a></span>
+    <span class="by"><span data-i18n="ft.by">ทำโดย</span> <a data-rnm="/" data-place="footer" href="https://runnear.me"><b>Runnear.me</b></a></span>
   </div>
   <div>
     <h2 data-i18n="ft.ref">อ้างอิง</h2>
@@ -405,6 +429,8 @@ footer a{color:var(--accent)}
     'wk.h':'Sample training week', 'wk.aria':'Training days per week', 'wk.d3':'3 days', 'wk.d4':'4 days', 'wk.d5':'5 days', 'wk.c1':'Day', 'wk.c2':'Workout',
     'lib.h':'Workout library by zone',
     'lib.note':'Every hard day: warm up with 10–15 min Easy + 4 × 20 s strides, and cool down with 10 min Easy. If you can’t hold the target pace through the set, your body isn’t ready that day. Stop the set and jog home Easy.',
+    'rnm.t':'Got your paces. Where should you run today?', 'rnm.d':'Running parks in Bangkok with route distances, water, toilets, lockers, opening hours and how to get there by BTS/MRT.', 'rnm.go':'Find a park near you →',
+    'rnm2.t':'Ran your test or long run in a park? Share the route with other runners', 'rnm2.d':'Upload a .fit / .gpx file from Garmin or draw the route on the map. Free, sign in with Google.', 'rnm2.go':'Add a route →',
     'gear.h':'Recommended gear', 'gear.aff':'Affiliate links · Shopee Thailand, ships within Thailand', 'gear.go':'View on Shopee →',
     'g1.n':'aminoVITAL Red Shot energy gel', 'g1.w':'For long runs over 60–75 min, one every 30–45 min',
     'g2.n':'GQ Lightning running shorts', 'g2.w':'Light fabric that stays out of the way on Interval and Rep days',
@@ -430,7 +456,7 @@ footer a{color:var(--accent)}
          easy:(m,p)=>({t:`Easy ${m} นาที`, d:`pace ${p} /กม.`}), restT:'พัก หรือเดินเบา ๆ / ยืดเหยียด',
          T:(P)=>({t:'Threshold: 4 × 1.6 กม. พักจ็อก 1 นาที', d:`pace ${P.T} /กม. (${P.T400} ต่อรอบ 400 ม.)`}),
          I:(P)=>({t:'Interval: 5 × 1,000 ม. พักจ็อก 3 นาที', d:`pace ${P.I1k} /กม. (${P.I400} ต่อรอบ 400 ม.)`}),
-         L:(P)=>({t:'วิ่งยาว 70–90 นาที', d:`Easy ${P.E} /กม. ถ้าซ้อมมาราธอน 20 นาทีท้ายใช้ pace M ${P.M}`}),
+         L:(P)=>({t:'วิ่งยาว 70–90 นาที', d:`Easy ${P.E} /กม. ถ้าซ้อมมาราธอน 20 นาทีท้ายใช้ pace M ${P.M}`, link:'หาสวนวิ่งยาว →'}),
          Sx:(P)=>({t:'Easy 30 นาที + 6 × 200 ม. เร็ว พักเดิน 200 ม.', d:`200 ม. ละ ${P.R200}`}),
          lib:(P)=>[
           ['E','Easy / วิ่งยาว',[`วิ่งต่อเนื่อง 30–60 นาที ที่ ${P.E} /กม.`,`วิ่งยาวสัปดาห์ละครั้ง ไม่เกิน ~25–30% ของระยะทั้งสัปดาห์`],'ถ้าคุยเป็นประโยคไม่ได้ แปลว่าเร็วไป ช้ากว่านี้ได้เสมอ'],
@@ -449,7 +475,7 @@ footer a{color:var(--accent)}
          easy:(m,p)=>({t:`Easy ${m} min`, d:`pace ${p} /km`}), restT:'Rest, or an easy walk / stretching',
          T:(P)=>({t:'Threshold: 4 × 1.6 km, 1 min jog recovery', d:`pace ${P.T} /km (${P.T400} per 400 m lap)`}),
          I:(P)=>({t:'Interval: 5 × 1,000 m, 3 min jog recovery', d:`pace ${P.I1k} /km (${P.I400} per 400 m lap)`}),
-         L:(P)=>({t:'Long run 70–90 min', d:`Easy ${P.E} /km. Training for a marathon? Run the last 20 min at M pace ${P.M}`}),
+         L:(P)=>({t:'Long run 70–90 min', d:`Easy ${P.E} /km. Training for a marathon? Run the last 20 min at M pace ${P.M}`, link:'Find a park for it →'}),
          Sx:(P)=>({t:'Easy 30 min + 6 × 200 m fast, 200 m walk recovery', d:`${P.R200} per 200 m`}),
          lib:(P)=>[
           ['E','Easy / long run',[`Continuous 30–60 min at ${P.E} /km`,`One long run a week, no more than ~25–30% of weekly volume`],'If you can’t speak in full sentences, you’re going too fast. Slower is always fine.'],
@@ -478,12 +504,21 @@ footer a{color:var(--accent)}
     }
   }catch(e){}
   const L = () => S[lang];
+  // RunNearMe: English at runnear.me/…, Thai at runnear.me/th/…; UTM so its GA shows Pace Lab traffic
+  function rnmUrl(path, place){
+    const [p, q] = path.split('?');
+    const u = new URL('https://runnear.me' + (lang === 'th' ? '/th' + (p === '/' ? '' : p) : p));
+    new URLSearchParams(q || '').forEach((v,k) => u.searchParams.set(k, v));
+    u.searchParams.set('utm_source', 'pace.runnear.me'); u.searchParams.set('utm_medium', 'referral'); u.searchParams.set('utm_campaign', place);
+    return u.toString();
+  }
   function applyLang(){
     const dict = lang === 'en' ? EN : TH;
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-i18n]').forEach(el => { const v = dict[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => { const v = dict[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v); });
     document.querySelector('meta[name="description"]').content = META[lang].desc;
+    document.querySelectorAll('a[data-rnm]').forEach(el => { el.href = rnmUrl(el.dataset.rnm, el.dataset.place); });
     document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
     $('time-fix').hidden = true;
   }
@@ -612,7 +647,7 @@ footer a{color:var(--accent)}
     if (!P) return;
     document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.d===days));
     $('o-week').innerHTML = plan().map(([day,w]) =>
-      `<tr><td>${day}</td><td>${chip(w.z)}<span class="wk">${w.t}</span>${w.d?`<div class="wd">${w.d}</div>`:''}</td></tr>`).join('');
+      `<tr><td>${day}</td><td>${chip(w.z)}<span class="wk">${w.t}</span>${w.d?`<div class="wd">${w.d}${w.link?` <a class="rnm-inline" href="${rnmUrl('/search?sort=near','long_run')}" data-rnm-done="1" data-place="long_run" target="_blank" rel="noopener">${w.link}</a>`:''}</div>`:''}</td></tr>`).join('');
     const lib = L().lib(P);
     $('o-lib').innerHTML = lib.map(([c,n,items,tip]) =>
       `<div class="wo" style="--c:${Z[c]}"><h3>${chip(c)}${n}</h3><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul><div class="tip">${tip}</div></div>`).join('');
@@ -627,6 +662,7 @@ footer a{color:var(--accent)}
   const track = (name, params) => { try { if (typeof gtag === 'function') gtag('event', name, params); } catch(e){} };
   document.querySelectorAll('a[data-gear]').forEach(a => a.addEventListener('click', () =>
     track('affiliate_click', { item: a.dataset.gear, placement: a.classList.contains('gear-link') ? 'lt_test' : 'training_guide' })));
+  document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[data-place]'); if (a && a.href.includes('runnear.me')) track('runnearme_click', { placement: a.dataset.place }); });
   document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => track('select_test', { test: b.dataset.t })));
   document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => track('select_plan', { days: +b.dataset.d })));
   let calcTimer;
