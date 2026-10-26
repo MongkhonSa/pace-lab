@@ -14,6 +14,9 @@
 <title>Pace Lab</title>
 <meta name="description" content="คำนวณ pace ซ้อมวิ่งจากผลเทส 3K/5K (VDOT), เทส Lactate Threshold 30 นาที และ Cooper 12 นาที">
 <link rel="canonical" href="https://pace.runnear.me/">
+<link rel="alternate" hreflang="th" href="https://pace.runnear.me/">
+<link rel="alternate" hreflang="en" href="https://pace.runnear.me/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://pace.runnear.me/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Runnear.me">
 <meta property="og:url" content="https://pace.runnear.me/">
@@ -63,6 +66,12 @@ header{display:flex;flex-direction:column;gap:6px}
 .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .brand h1{font-size:2.1rem;letter-spacing:.01em}
 .brand .tag{font-family:var(--display);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+header{position:relative}
+.brand{padding-right:96px}
+.lang{position:absolute;top:4px;right:0;display:inline-flex;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:3px;}
+.lang button{appearance:none;border:0;background:transparent;color:var(--muted);font:700 .78rem var(--display);letter-spacing:.06em;padding:5px 10px;border-radius:6px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.lang button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 header p{margin:0;color:var(--muted);max-width:60ch}
 
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:5px}
@@ -186,36 +195,41 @@ footer a{color:var(--accent)}
 <div class="wrap">
 
 <header>
-  <div class="brand"><h1>Pace Lab</h1><span class="tag">Training pace calculator</span></div>
-  <p>เลือกวิธีเทส ใส่ผล แล้วได้ pace ซ้อมแต่ละโซนทันที ใช้สูตร VDOT ของ Jack Daniels เป็นแกนกลาง ทุกเทสคำนวณมาเป็นตัวเลขชุดเดียวกัน</p>
+  <div class="brand"><h1>Pace Lab</h1><span class="tag">Training pace calculator</span>
+    <div class="lang" role="group" aria-label="Language / ภาษา">
+      <button type="button" id="lang-th" data-lang="th" aria-pressed="true">TH</button>
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+  <p data-i18n="intro">เลือกวิธีเทส ใส่ผล แล้วได้ pace ซ้อมแต่ละโซนทันที ใช้สูตร VDOT ของ Jack Daniels เป็นแกนกลาง ทุกเทสคำนวณมาเป็นตัวเลขชุดเดียวกัน</p>
 </header>
 
-<div class="tabs" role="tablist" aria-label="วิธีเทส">
-  <button class="tab" role="tab" id="tab-race" aria-selected="true" data-t="race">เทสวิ่ง 3K/5K<small>VDOT</small></button>
-  <button class="tab" role="tab" id="tab-lt" aria-selected="false" data-t="lt">Lactate Threshold<small>วิ่ง 30 นาที</small></button>
-  <button class="tab" role="tab" id="tab-cooper" aria-selected="false" data-t="cooper">Cooper<small>วิ่ง 12 นาที</small></button>
+<div class="tabs" role="tablist" aria-label="วิธีเทส" data-i18n-aria="tabs.aria">
+  <button class="tab" role="tab" id="tab-race" aria-selected="true" data-t="race" data-i18n="tab.race">เทสวิ่ง 3K/5K<small>VDOT</small></button>
+  <button class="tab" role="tab" id="tab-lt" aria-selected="false" data-t="lt" data-i18n="tab.lt">Lactate Threshold<small>วิ่ง 30 นาที</small></button>
+  <button class="tab" role="tab" id="tab-cooper" aria-selected="false" data-t="cooper" data-i18n="tab.cooper">Cooper<small>วิ่ง 12 นาที</small></button>
 </div>
 
 <section class="panel" id="p-race">
-  <p class="how"><b>วิธีเทส:</b> วอร์มอัพ 15 นาที แล้ววิ่งเต็มที่ระยะที่เลือก (หรือใช้ผลงานแข่งล่าสุดภายใน 6–8 สัปดาห์) ใส่เวลาที่ทำได้</p>
+  <p class="how" data-i18n="race.how"><b>วิธีเทส:</b> วอร์มอัพ 15 นาที แล้ววิ่งเต็มที่ระยะที่เลือก (หรือใช้ผลงานแข่งล่าสุดภายใน 6–8 สัปดาห์) ใส่เวลาที่ทำได้</p>
   <div class="fields">
     <div class="field" style="flex:1 1 160px">
-      <label for="race-dist">ระยะ</label>
+      <label for="race-dist" data-i18n="race.dist">ระยะ</label>
       <select id="race-dist">
-        <option value="1609.34">1 ไมล์</option>
-        <option value="3000">3 กม.</option>
-        <option value="5000" selected>5 กม.</option>
-        <option value="10000">10 กม.</option>
-        <option value="21097.5">ฮาล์ฟมาราธอน</option>
-        <option value="42195">มาราธอน</option>
+        <option value="1609.34" data-i18n="d.mile">1 ไมล์</option>
+        <option value="3000" data-i18n="d.3k">3 กม.</option>
+        <option value="5000" selected data-i18n="d.5k">5 กม.</option>
+        <option value="10000" data-i18n="d.10k">10 กม.</option>
+        <option value="21097.5" data-i18n="d.half">ฮาล์ฟมาราธอน</option>
+        <option value="42195" data-i18n="d.full">มาราธอน</option>
       </select>
     </div>
     <div class="field">
-      <label>เวลา (ชม. : นาที : วินาที)</label>
+      <label data-i18n="race.time">เวลา (ชม. : นาที : วินาที)</label>
       <div class="time">
-        <input id="race-h" type="number" inputmode="numeric" min="0" max="9" step="1" value="0" aria-label="ชั่วโมง"><span>:</span>
-        <input id="race-m" type="number" inputmode="numeric" min="0" max="59" step="1" value="24" aria-label="นาที"><span>:</span>
-        <input id="race-s" type="number" inputmode="numeric" min="0" max="59" step="1" value="30" aria-label="วินาที">
+        <input id="race-h" type="number" inputmode="numeric" min="0" max="9" step="1" value="0" aria-label="ชั่วโมง" data-i18n-aria="aria.h"><span>:</span>
+        <input id="race-m" type="number" inputmode="numeric" min="0" max="59" step="1" value="24" aria-label="นาที" data-i18n-aria="aria.m"><span>:</span>
+        <input id="race-s" type="number" inputmode="numeric" min="0" max="59" step="1" value="30" aria-label="วินาที" data-i18n-aria="aria.s">
       </div>
       <span class="hint" id="time-fix" hidden></span>
     </div>
@@ -223,26 +237,26 @@ footer a{color:var(--accent)}
 </section>
 
 <section class="panel" id="p-lt" hidden>
-  <p class="how"><b>วิธีเทส (Joe Friel):</b> วอร์มอัพ 15 นาที แล้ววิ่งคนเดียวเต็มที่ 30 นาที กด lap ที่นาทีที่ 10 จดระยะทางทั้งหมด และ<b>ชีพจรเฉลี่ย 20 นาทีสุดท้าย</b> = LTHR</p>
+  <p class="how" data-i18n="lt.how"><b>วิธีเทส (Joe Friel):</b> วอร์มอัพ 15 นาที แล้ววิ่งคนเดียวเต็มที่ 30 นาที กด lap ที่นาทีที่ 10 จดระยะทางทั้งหมด และ<b>ชีพจรเฉลี่ย 20 นาทีสุดท้าย</b> = LTHR</p>
   <div class="fields">
     <div class="field" style="flex:1 1 160px">
-      <label for="lt-dist">ระยะที่วิ่งได้ใน 30 นาที (กม.)</label>
+      <label for="lt-dist" data-i18n="lt.dist">ระยะที่วิ่งได้ใน 30 นาที (กม.)</label>
       <input id="lt-dist" type="number" inputmode="decimal" step="0.01" min="1" value="6.1">
     </div>
     <div class="field" style="flex:1 1 160px">
-      <label for="lt-hr">ชีพจรเฉลี่ย 20 นาทีหลัง (bpm)</label>
+      <label for="lt-hr" data-i18n="lt.hr">ชีพจรเฉลี่ย 20 นาทีหลัง (bpm)</label>
       <input id="lt-hr" type="number" inputmode="numeric" min="100" max="220" value="172">
-      <span class="hint">ไม่ใส่ก็ได้ ถ้าไม่มีนาฬิกาวัดชีพจร</span>
+      <span class="hint" data-i18n="lt.hint">ไม่ใส่ก็ได้ ถ้าไม่มีนาฬิกาวัดชีพจร</span>
     </div>
   </div>
-  <p class="gear-line">ยังไม่มีนาฬิกาวัดชีพจร? <a class="gear-link" href="https://s.shopee.co.th/3B8NQs07XC" target="_blank" rel="sponsored noopener" data-gear="garmin-fr165">ดู Garmin Forerunner 165 →</a><span class="gl-aff">(ลิงก์ affiliate)</span></p>
+  <p class="gear-line"><span data-i18n="gl.q">ยังไม่มีนาฬิกาวัดชีพจร?</span> <a class="gear-link" href="https://s.shopee.co.th/3B8NQs07XC" target="_blank" rel="sponsored noopener" data-gear="garmin-fr165" data-i18n="gl.link">ดู Garmin Forerunner 165 →</a><span class="gl-aff" data-i18n="gl.aff">(ลิงก์ affiliate)</span></p>
 </section>
 
 <section class="panel" id="p-cooper" hidden>
-  <p class="how"><b>วิธีเทส:</b> วอร์มอัพ แล้ววิ่งให้ได้ไกลที่สุดใน 12 นาที (ลู่ 400 ม. สะดวกที่สุด) จดระยะเป็นเมตร</p>
+  <p class="how" data-i18n="cp.how"><b>วิธีเทส:</b> วอร์มอัพ แล้ววิ่งให้ได้ไกลที่สุดใน 12 นาที (ลู่ 400 ม. สะดวกที่สุด) จดระยะเป็นเมตร</p>
   <div class="fields">
     <div class="field" style="flex:1 1 200px">
-      <label for="cp-dist">ระยะที่วิ่งได้ใน 12 นาที (เมตร)</label>
+      <label for="cp-dist" data-i18n="cp.dist">ระยะที่วิ่งได้ใน 12 นาที (เมตร)</label>
       <input id="cp-dist" type="number" inputmode="numeric" min="800" step="10" value="2750">
     </div>
   </div>
@@ -260,94 +274,94 @@ footer a{color:var(--accent)}
   </div>
 </div>
 
-<div class="sec-head"><h2>Pace ซ้อม</h2><span>ต่อกิโลเมตร · ต่อรอบลู่ 400 ม.</span></div>
+<div class="sec-head"><h2 data-i18n="pace.h">Pace ซ้อม</h2><span data-i18n="pace.sub">ต่อกิโลเมตร · ต่อรอบลู่ 400 ม.</span></div>
 <div class="lanes" id="o-lanes"></div>
 
 <div id="hr-block" hidden>
-  <div class="sec-head" style="margin-bottom:10px"><h2>โซนชีพจร</h2><span>จาก LTHR ตามสูตร Friel</span></div>
+  <div class="sec-head" style="margin-bottom:10px"><h2 data-i18n="hr.h">โซนชีพจร</h2><span data-i18n="hr.sub">จาก LTHR ตามสูตร Friel</span></div>
   <div class="tbl-wrap"><table>
-    <thead><tr><th>โซน</th><th>ชีพจร (bpm)</th><th>ความรู้สึก</th></tr></thead>
+    <thead><tr><th data-i18n="hr.c1">โซน</th><th data-i18n="hr.c2">ชีพจร (bpm)</th><th data-i18n="hr.c3">ความรู้สึก</th></tr></thead>
     <tbody id="o-hr"></tbody>
   </table></div>
 </div>
 
 <div>
-  <div class="sec-head" style="margin-bottom:10px"><h2>เวลาแข่งที่คาดว่าทำได้</h2><span>ถ้าซ้อมเฉพาะระยะนั้นมาพอ</span></div>
+  <div class="sec-head" style="margin-bottom:10px"><h2 data-i18n="pred.h">เวลาแข่งที่คาดว่าทำได้</h2><span data-i18n="pred.sub">ถ้าซ้อมเฉพาะระยะนั้นมาพอ</span></div>
   <div class="tbl-wrap"><table>
-    <thead><tr><th>ระยะ</th><th>เวลา</th><th>Pace / กม.</th></tr></thead>
+    <thead><tr><th data-i18n="pred.c1">ระยะ</th><th data-i18n="pred.c2">เวลา</th><th data-i18n="pred.c3">Pace / กม.</th></tr></thead>
     <tbody id="o-pred"></tbody>
   </table></div>
 </div>
 
 <section class="guide" id="guide">
-  <div class="sec-head"><h2>วิธีเอาไปซ้อม</h2><span>pace ในตัวอย่างอัปเดตตามผลเทสของคุณ</span></div>
+  <div class="sec-head"><h2 data-i18n="g.h">วิธีเอาไปซ้อม</h2><span data-i18n="g.sub">pace ในตัวอย่างอัปเดตตามผลเทสของคุณ</span></div>
 
   <div class="rules">
-    <div class="rule"><span class="k">80/20</span><h3>ช้าเป็นส่วนใหญ่</h3><p>ประมาณ 80% ของเวลาวิ่งทั้งสัปดาห์อยู่ที่ Easy อีก 20% เป็นวันหนัก (T, I, R)</p></div>
-    <div class="rule"><span class="k">2</span><h3>วันหนักไม่เกิน 2 วัน/สัปดาห์</h3><p>ห้ามวางวันหนักติดกัน คั่นด้วยวัน Easy หรือวันพักเสมอ</p></div>
-    <div class="rule"><span class="k">+10%</span><h3>เพิ่มระยะทีละน้อย</h3><p>ระยะรวมต่อสัปดาห์เพิ่มไม่เกินราว 10% และทุก 3–4 สัปดาห์ให้ลดลงหนึ่งสัปดาห์</p></div>
-    <div class="rule"><span class="k">4–6</span><h3>สัปดาห์แล้วเทสใหม่</h3><p>ถ้าวัน T และ I เริ่มรู้สึกง่าย เทสใหม่แล้วใช้ pace ชุดใหม่ อย่าเร่งเองก่อน</p></div>
+    <div class="rule"><span class="k">80/20</span><h3 data-i18n="r1.h">ช้าเป็นส่วนใหญ่</h3><p data-i18n="r1.p">ประมาณ 80% ของเวลาวิ่งทั้งสัปดาห์อยู่ที่ Easy อีก 20% เป็นวันหนัก (T, I, R)</p></div>
+    <div class="rule"><span class="k">2</span><h3 data-i18n="r2.h">วันหนักไม่เกิน 2 วัน/สัปดาห์</h3><p data-i18n="r2.p">ห้ามวางวันหนักติดกัน คั่นด้วยวัน Easy หรือวันพักเสมอ</p></div>
+    <div class="rule"><span class="k">+10%</span><h3 data-i18n="r3.h">เพิ่มระยะทีละน้อย</h3><p data-i18n="r3.p">ระยะรวมต่อสัปดาห์เพิ่มไม่เกินราว 10% และทุก 3–4 สัปดาห์ให้ลดลงหนึ่งสัปดาห์</p></div>
+    <div class="rule"><span class="k">4–6</span><h3 data-i18n="r4.h">สัปดาห์แล้วเทสใหม่</h3><p data-i18n="r4.p">ถ้าวัน T และ I เริ่มรู้สึกง่าย เทสใหม่แล้วใช้ pace ชุดใหม่ อย่าเร่งเองก่อน</p></div>
   </div>
 
-  <div class="sec-head"><h3 style="font-size:1.1rem">ตัวอย่างตารางซ้อม 1 สัปดาห์</h3>
-    <div class="seg" role="group" aria-label="จำนวนวันซ้อมต่อสัปดาห์">
-      <button type="button" id="d3" data-d="3" aria-pressed="false">3 วัน</button>
-      <button type="button" id="d4" data-d="4" aria-pressed="true">4 วัน</button>
-      <button type="button" id="d5" data-d="5" aria-pressed="false">5 วัน</button>
+  <div class="sec-head"><h3 style="font-size:1.1rem" data-i18n="wk.h">ตัวอย่างตารางซ้อม 1 สัปดาห์</h3>
+    <div class="seg" role="group" aria-label="จำนวนวันซ้อมต่อสัปดาห์" data-i18n-aria="wk.aria">
+      <button type="button" id="d3" data-d="3" aria-pressed="false" data-i18n="wk.d3">3 วัน</button>
+      <button type="button" id="d4" data-d="4" aria-pressed="true" data-i18n="wk.d4">4 วัน</button>
+      <button type="button" id="d5" data-d="5" aria-pressed="false" data-i18n="wk.d5">5 วัน</button>
     </div>
   </div>
   <div class="tbl-wrap"><table class="week">
-    <thead><tr><th>วัน</th><th>ซ้อม</th></tr></thead>
+    <thead><tr><th data-i18n="wk.c1">วัน</th><th data-i18n="wk.c2">ซ้อม</th></tr></thead>
     <tbody id="o-week"></tbody>
   </table></div>
 
-  <h3 style="font-size:1.1rem">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
+  <h3 style="font-size:1.1rem" data-i18n="lib.h">คลังตัวอย่างการซ้อมแต่ละโซน</h3>
   <div class="lib" id="o-lib"></div>
-  <p class="note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
+  <p class="note" data-i18n="lib.note">ทุกวันหนัก: วอร์มอัพวิ่ง Easy 10–15 นาที + strides 4 × 20 วินาที ก่อนเริ่ม และคูลดาวน์ Easy 10 นาทีหลังจบ ถ้าวิ่งไม่ถึง pace ที่กำหนดจนจบเซต แปลว่าวันนั้นร่างกายยังไม่พร้อม ให้หยุดเซตแล้ววิ่ง Easy กลับ</p>
   <div class="gear-wrap">
-  <div class="gear-head"><h3 style="font-size:1.1rem">อุปกรณ์แนะนำ</h3><span class="aff">ลิงก์ affiliate · ซื้อผ่านลิงก์ช่วยสนับสนุนเว็บ</span></div>
+  <div class="gear-head"><h3 style="font-size:1.1rem" data-i18n="gear.h">อุปกรณ์แนะนำ</h3><span class="aff" data-i18n="gear.aff">ลิงก์ affiliate · ซื้อผ่านลิงก์ช่วยสนับสนุนเว็บ</span></div>
   <div class="gear-grid">
     <a class="gear" href="https://s.shopee.co.th/5AtRoLxQHA" target="_blank" rel="sponsored noopener" data-gear="aminovital-gel">
       <img src="https://down-th.img.susercontent.com/file/sg-11134201-8258r-mukx4hc80cn9a3" alt="" loading="lazy" width="64" height="64">
-      <span class="gt"><span class="gn">aminoVITAL Red Shot เจลพลังงาน</span><span class="gw">วันวิ่งยาวเกิน 60–75 นาที กินทุก 30–45 นาที</span><span class="go">ดูใน Shopee →</span></span>
+      <span class="gt"><span class="gn" data-i18n="g1.n">aminoVITAL Red Shot เจลพลังงาน</span><span class="gw" data-i18n="g1.w">วันวิ่งยาวเกิน 60–75 นาที กินทุก 30–45 นาที</span><span class="go" data-i18n="gear.go">ดูใน Shopee →</span></span>
     </a>
     <a class="gear" href="https://s.shopee.co.th/8V9tmka9al" target="_blank" rel="sponsored noopener" data-gear="gq-shorts">
       <img src="https://down-th.img.susercontent.com/file/th-11134207-81ztn-mjip1wz0wt8m9e" alt="" loading="lazy" width="64" height="64">
-      <span class="gt"><span class="gn">GQ Lightning กางเกงวิ่งขาสั้น</span><span class="gw">ผ้าเบา ไม่ถ่วงขาในวัน Interval และ Rep</span><span class="go">ดูใน Shopee →</span></span>
+      <span class="gt"><span class="gn" data-i18n="g2.n">GQ Lightning กางเกงวิ่งขาสั้น</span><span class="gw" data-i18n="g2.w">ผ้าเบา ไม่ถ่วงขาในวัน Interval และ Rep</span><span class="go" data-i18n="gear.go">ดูใน Shopee →</span></span>
     </a>
     <a class="gear" href="https://s.shopee.co.th/1W09Rw8SUC" target="_blank" rel="sponsored noopener" data-gear="gq-shirt">
       <img src="https://down-th.img.susercontent.com/file/th-11134207-81zth-mjip0026tgquda" alt="" loading="lazy" width="64" height="64">
-      <span class="gt"><span class="gn">GQ Votex-T เสื้อวิ่ง</span><span class="gw">ระบายเหงื่อ เหมาะกับวิ่งยาวในอากาศร้อนชื้น</span><span class="go">ดูใน Shopee →</span></span>
+      <span class="gt"><span class="gn" data-i18n="g3.n">GQ Votex-T เสื้อวิ่ง</span><span class="gw" data-i18n="g3.w">ระบายเหงื่อ เหมาะกับวิ่งยาวในอากาศร้อนชื้น</span><span class="go" data-i18n="gear.go">ดูใน Shopee →</span></span>
     </a>
     <a class="gear" href="https://s.shopee.co.th/1W09T0zGfS" target="_blank" rel="sponsored noopener" data-gear="rnbl-longsleeve">
       <img src="https://down-th.img.susercontent.com/file/th-11134207-81ztd-mi3z5ch2172f51" alt="" loading="lazy" width="64" height="64">
-      <span class="gt"><span class="gn">Run Now Beer Later เสื้อวิ่งแขนยาว</span><span class="gw">กันแดดแขนในวันวิ่งยาวกลางแจ้ง</span><span class="go">ดูใน Shopee →</span></span>
+      <span class="gt"><span class="gn" data-i18n="g4.n">Run Now Beer Later เสื้อวิ่งแขนยาว</span><span class="gw" data-i18n="g4.w">กันแดดแขนในวันวิ่งยาวกลางแจ้ง</span><span class="go" data-i18n="gear.go">ดูใน Shopee →</span></span>
     </a>
     <a class="gear" href="https://s.shopee.co.th/80DdBvLP3W" target="_blank" rel="sponsored noopener" data-gear="sunglasses">
       <img src="https://down-th.img.susercontent.com/file/sg-11134201-8262x-mkc9jkxdhuyoca" alt="" loading="lazy" width="64" height="64">
-      <span class="gt"><span class="gn">แว่นกันแดดสำหรับวิ่ง</span><span class="gw">ลดแสงจ้าตอนวิ่งกลางแจ้ง เช้าและเย็น</span><span class="go">ดูใน Shopee →</span></span>
+      <span class="gt"><span class="gn" data-i18n="g5.n">แว่นกันแดดสำหรับวิ่ง</span><span class="gw" data-i18n="g5.w">ลดแสงจ้าตอนวิ่งกลางแจ้ง เช้าและเย็น</span><span class="go" data-i18n="gear.go">ดูใน Shopee →</span></span>
     </a>
   </div>
   </div>
 </section>
 
-<p class="note">ตัวเลขเป็นจุดเริ่มต้น ไม่ใช่กฎตายตัว วันร้อนหรือชื้นแบบกรุงเทพฯ ให้ช้าลง 10–20 วินาที/กม. โดยเฉพาะ Easy และ Marathon ควรเทสซ้ำทุก 4–6 สัปดาห์</p>
+<p class="note" data-i18n="note.heat">ตัวเลขเป็นจุดเริ่มต้น ไม่ใช่กฎตายตัว วันร้อนหรือชื้นแบบกรุงเทพฯ ให้ช้าลง 10–20 วินาที/กม. โดยเฉพาะ Easy และ Marathon ควรเทสซ้ำทุก 4–6 สัปดาห์</p>
 
 <footer>
   <div class="credit">
-    <span class="by">ทำโดย <a href="https://runnear.me"><b>Runnear.me</b></a></span>
+    <span class="by"><span data-i18n="ft.by">ทำโดย</span> <a href="https://runnear.me"><b>Runnear.me</b></a></span>
   </div>
   <div>
-    <h2>อ้างอิง</h2>
+    <h2 data-i18n="ft.ref">อ้างอิง</h2>
     <ol>
-      <li>Daniels, J. (2022). <i>Daniels' Running Formula</i> (4th ed.). Human Kinetics. ที่มาของ VDOT และ pace ซ้อม E / M / T / I / R</li>
-      <li>Daniels, J. &amp; Gilbert, J. (1979). <i>Oxygen Power: Performance Tables for Distance Runners</i>. สูตรคำนวณ VO₂ และ %VO₂max ตามเวลาที่ใช้วิ่ง</li>
-      <li>Friel, J. <i>Quick Guide to Setting Zones</i>. <a href="https://www.trainingpeaks.com/blog/joe-friel-s-quick-guide-to-setting-zones/" target="_blank" rel="noopener">TrainingPeaks</a>. เทส 30 นาทีหา LTHR และโซนชีพจร Z1–Z5c</li>
-      <li>Cooper, K. H. (1968). A means of assessing maximal oxygen intake. <i>JAMA</i>, 203(3), 201–204. เทสวิ่ง 12 นาที</li>
-      <li>Seiler, S. (2010). What is best practice for training intensity and duration distribution in endurance athletes? <i>IJSPP</i>, 5(3), 276–291. หลักการแบ่งความหนัก 80/20</li>
+      <li>Daniels, J. (2022). <i>Daniels' Running Formula</i> (4th ed.). Human Kinetics. <span data-i18n="ref1">ที่มาของ VDOT และ pace ซ้อม E / M / T / I / R</span></li>
+      <li>Daniels, J. &amp; Gilbert, J. (1979). <i>Oxygen Power: Performance Tables for Distance Runners</i>. <span data-i18n="ref2">สูตรคำนวณ VO₂ และ %VO₂max ตามเวลาที่ใช้วิ่ง</span></li>
+      <li>Friel, J. <i>Quick Guide to Setting Zones</i>. <a href="https://www.trainingpeaks.com/blog/joe-friel-s-quick-guide-to-setting-zones/" target="_blank" rel="noopener">TrainingPeaks</a>. <span data-i18n="ref3">เทส 30 นาทีหา LTHR และโซนชีพจร Z1–Z5c</span></li>
+      <li>Cooper, K. H. (1968). A means of assessing maximal oxygen intake. <i>JAMA</i>, 203(3), 201–204. <span data-i18n="ref4">เทสวิ่ง 12 นาที</span></li>
+      <li>Seiler, S. (2010). What is best practice for training intensity and duration distribution in endurance athletes? <i>IJSPP</i>, 5(3), 276–291. <span data-i18n="ref5">หลักการแบ่งความหนัก 80/20</span></li>
     </ol>
   </div>
-  <div>Cooper และเทส 30 นาทีเทียบเป็น VDOT ด้วยสูตร Daniels &amp; Gilbert โดยถือเป็นการวิ่งเต็มที่ตามเวลานั้น ผลเป็นค่าประมาณ ไม่ใช่คำแนะนำทางการแพทย์</div>
+  <div data-i18n="ft.disc">Cooper และเทส 30 นาทีเทียบเป็น VDOT ด้วยสูตร Daniels &amp; Gilbert โดยถือเป็นการวิ่งเต็มที่ตามเวลานั้น ผลเป็นค่าประมาณ ไม่ใช่คำแนะนำทางการแพทย์</div>
 </footer>
 </div>
 
@@ -366,6 +380,119 @@ footer a{color:var(--accent)}
   const secPerKm = v => 1000/v*60;          // v m/min
   const per400 = v => 400/v*60;
   const $ = id => document.getElementById(id);
+
+  // ---- language ----
+  const EN = {
+    'intro':"Pick a test, enter your result, and get training paces for every zone. Built on Jack Daniels' VDOT formula, so every test lands on the same scale.",
+    'tabs.aria':'Test type',
+    'tab.race':'3K/5K test<small>VDOT</small>', 'tab.lt':'Lactate Threshold<small>30-min run</small>', 'tab.cooper':'Cooper<small>12-min run</small>',
+    'race.how':'<b>How to test:</b> Warm up for 15 minutes, then run the chosen distance all-out (or use a race result from the last 6–8 weeks). Enter your time.',
+    'race.dist':'Distance', 'race.time':'Time (h : min : sec)', 'aria.h':'Hours', 'aria.m':'Minutes', 'aria.s':'Seconds',
+    'd.mile':'1 mile', 'd.3k':'3 km', 'd.5k':'5 km', 'd.10k':'10 km', 'd.half':'Half marathon', 'd.full':'Marathon',
+    'lt.how':'<b>How to test (Joe Friel):</b> Warm up for 15 minutes, then run solo and all-out for 30 minutes. Press lap at minute 10. Note the total distance and your <b>average heart rate for the last 20 minutes</b> = LTHR.',
+    'lt.dist':'Distance covered in 30 min (km)', 'lt.hr':'Avg heart rate, last 20 min (bpm)', 'lt.hint':'Optional, if you have no heart-rate watch',
+    'gl.q':'No heart-rate watch yet?', 'gl.link':'See the Garmin Forerunner 165 →', 'gl.aff':'(affiliate link · Shopee Thailand)',
+    'cp.how':'<b>How to test:</b> Warm up, then run as far as you can in 12 minutes (a 400 m track is easiest). Note the distance in meters.',
+    'cp.dist':'Distance covered in 12 min (meters)',
+    'pace.h':'Training paces', 'pace.sub':'per km · per 400 m lap',
+    'hr.h':'Heart-rate zones', 'hr.sub':'from LTHR, Friel method', 'hr.c1':'Zone', 'hr.c2':'Heart rate (bpm)', 'hr.c3':'Feel',
+    'pred.h':'Predicted race times', 'pred.sub':'with training specific to that distance', 'pred.c1':'Distance', 'pred.c2':'Time', 'pred.c3':'Pace / km',
+    'g.h':'How to train with it', 'g.sub':'Example paces update with your test result',
+    'r1.h':'Mostly slow', 'r1.p':'About 80% of your weekly running time at Easy, 20% on hard days (T, I, R).',
+    'r2.h':'Two hard days a week, max', 'r2.p':'Never put hard days back to back. Separate them with an Easy day or a rest day.',
+    'r3.h':'Build slowly', 'r3.p':'Raise weekly volume by no more than about 10%, and every 3–4 weeks take a lighter week.',
+    'r4.h':'weeks, then retest', 'r4.p':'When T and I days start to feel easy, retest and use the new paces. Don’t speed up on your own first.',
+    'wk.h':'Sample training week', 'wk.aria':'Training days per week', 'wk.d3':'3 days', 'wk.d4':'4 days', 'wk.d5':'5 days', 'wk.c1':'Day', 'wk.c2':'Workout',
+    'lib.h':'Workout library by zone',
+    'lib.note':'Every hard day: warm up with 10–15 min Easy + 4 × 20 s strides, and cool down with 10 min Easy. If you can’t hold the target pace through the set, your body isn’t ready that day. Stop the set and jog home Easy.',
+    'gear.h':'Recommended gear', 'gear.aff':'Affiliate links · Shopee Thailand, ships within Thailand', 'gear.go':'View on Shopee →',
+    'g1.n':'aminoVITAL Red Shot energy gel', 'g1.w':'For long runs over 60–75 min, one every 30–45 min',
+    'g2.n':'GQ Lightning running shorts', 'g2.w':'Light fabric that stays out of the way on Interval and Rep days',
+    'g3.n':'GQ Votex-T running shirt', 'g3.w':'Wicks sweat, made for long runs in hot, humid weather',
+    'g4.n':'Run Now Beer Later long-sleeve shirt', 'g4.w':'Sun cover for your arms on long runs outdoors',
+    'g5.n':'Running sunglasses', 'g5.w':'Cuts glare on outdoor runs, morning and evening',
+    'note.heat':'These numbers are a starting point, not rules. On hot or humid days, like in Bangkok, slow down 10–20 sec/km, especially for Easy and Marathon. Retest every 4–6 weeks.',
+    'ft.by':'Made by', 'ft.ref':'References',
+    'ref1':'Source of VDOT and E / M / T / I / R training paces', 'ref2':'Formulas for VO₂ and %VO₂max by race duration',
+    'ref3':'30-minute LTHR test and heart-rate zones Z1–Z5c', 'ref4':'12-minute run test', 'ref5':'The 80/20 intensity distribution',
+    'ft.disc':'The Cooper and 30-minute tests are converted to VDOT with the Daniels & Gilbert formula, treating each as an all-out effort for that duration. Results are estimates, not medical advice.'
+  };
+  // strings built by the script
+  const S = {
+    th:{ errTime:'ใส่เวลาที่วิ่งได้ก่อน', errNeg:'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง', errLt:'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)', errCp:'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)',
+         errRange:'ผลเทสอยู่นอกช่วงที่สูตรใช้ได้ ลองเช็กตัวเลขอีกครั้ง', testPace:'Pace เทส', ltPace:'Threshold pace (ผลเทส)', cooper:'VO₂max (สูตร Cooper)',
+         km:'/กม.', l400:'/400ม.', lap400:'ต่อรอบ 400 ม.',
+         fix:(t)=>`ปรับเป็น ${t} ให้แล้ว (นาทีและวินาทีใส่ได้ 0–59)`,
+         useE:'วิ่งสบาย คุยได้ วิ่งยาว ฟื้นตัว ~70–80% ของระยะซ้อมทั้งสัปดาห์', useM:'pace มาราธอน ใช้ในวิ่งยาวช่วงท้ายหรือ tempo ยาว',
+         useT:'เหนื่อยแบบคุมได้ 20 นาทีต่อเนื่อง หรือ 4–5 × 1 กม. พัก 1 นาที', useI:'VO₂max เช่น 5 × 1,000 ม. พักจ็อกเท่าเวลาวิ่ง', useR:'ความเร็ว ฟอร์ม เช่น 8 × 400 ม. พักเต็มที่',
+         below:'ต่ำกว่า', above:'มากกว่า', hz:['ฟื้นตัว เบามาก','Aerobic / Easy','Tempo','ใต้ threshold','Threshold','Aerobic capacity','Anaerobic'],
+         rest:'พัก', days:['จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์','อาทิตย์'],
+         easy:(m,p)=>({t:`Easy ${m} นาที`, d:`pace ${p} /กม.`}), restT:'พัก หรือเดินเบา ๆ / ยืดเหยียด',
+         T:(P)=>({t:'Threshold: 4 × 1.6 กม. พักจ็อก 1 นาที', d:`pace ${P.T} /กม. (${P.T400} ต่อรอบ 400 ม.)`}),
+         I:(P)=>({t:'Interval: 5 × 1,000 ม. พักจ็อก 3 นาที', d:`pace ${P.I1k} /กม. (${P.I400} ต่อรอบ 400 ม.)`}),
+         L:(P)=>({t:'วิ่งยาว 70–90 นาที', d:`Easy ${P.E} /กม. ถ้าซ้อมมาราธอน 20 นาทีท้ายใช้ pace M ${P.M}`}),
+         Sx:(P)=>({t:'Easy 30 นาที + 6 × 200 ม. เร็ว พักเดิน 200 ม.', d:`200 ม. ละ ${P.R200}`}),
+         lib:(P)=>[
+          ['E','Easy / วิ่งยาว',[`วิ่งต่อเนื่อง 30–60 นาที ที่ ${P.E} /กม.`,`วิ่งยาวสัปดาห์ละครั้ง ไม่เกิน ~25–30% ของระยะทั้งสัปดาห์`],'ถ้าคุยเป็นประโยคไม่ได้ แปลว่าเร็วไป ช้ากว่านี้ได้เสมอ'],
+          ['M','Marathon pace',[`วิ่งยาว 90 นาที โดย 30 นาทีท้ายใช้ <b>${P.M}</b> /กม.`,`3 × 5 กม. ที่ <b>${P.M}</b> พักจ็อก 5 นาที`],'ใช้เฉพาะช่วงเตรียมแข่งฮาล์ฟ/มาราธอน 8–12 สัปดาห์ก่อนวันแข่ง'],
+          ['T','Threshold',[`Tempo ต่อเนื่อง 20 นาที ที่ <b>${P.T}</b> /กม.`,`Cruise: 4–5 × 1.6 กม. ที่ <b>${P.T}</b> พักจ็อก 1 นาที`],'เหนื่อยแต่คุมได้ พูดได้ทีละคำ T รวมต่อครั้งไม่เกิน ~10% ของระยะทั้งสัปดาห์'],
+          ['I','Interval (VO₂max)',[`5 × 1,000 ม. ที่ <b>${P.I1k}</b> /กม. พักจ็อก 3 นาที`,`6 × 800 ม. ที่ <b>${P.I400}</b> ต่อรอบ 400 ม. พักจ็อก 2–3 นาที`],'แต่ละเที่ยว 3–5 นาที I รวมต่อครั้งไม่เกิน 8% ของระยะทั้งสัปดาห์ หรือ 10 กม.'],
+          ['R','Repetition',[`8 × 400 ม. ที่ <b>${P.R400}</b> พักเดิน/จ็อก 400 ม.`,`8 × 200 ม. ที่ <b>${P.R200}</b> พักเดิน 200 ม.`],'เน้นฟอร์มและความเร็ว พักให้หายเหนื่อยเต็มที่ก่อนเที่ยวถัดไป']] },
+    en:{ errTime:'Enter your finish time first.', errNeg:'Time can’t be negative. Check the numbers.', errLt:'Enter the distance you covered in 30 minutes (km).', errCp:'Enter the distance you covered in 12 minutes (meters).',
+         errRange:'That result is outside the range the formula covers. Check the numbers.', testPace:'Test pace', ltPace:'Threshold pace (from test)', cooper:'VO₂max (Cooper formula)',
+         km:'/km', l400:'/400m', lap400:'per 400 m lap',
+         fix:(t)=>`Adjusted to ${t} (minutes and seconds go from 0–59)`,
+         useE:'Comfortable and conversational. Long runs and recovery, ~70–80% of weekly volume', useM:'Marathon pace, for the end of long runs or long tempos',
+         useT:'Comfortably hard: 20 min continuous, or 4–5 × 1 km with 1 min rest', useI:'VO₂max work, e.g. 5 × 1,000 m with equal-time jog recovery', useR:'Speed and form, e.g. 8 × 400 m with full recovery',
+         below:'below', above:'above', hz:['Recovery, very easy','Aerobic / Easy','Tempo','Sub-threshold','Threshold','Aerobic capacity','Anaerobic'],
+         rest:'Rest', days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+         easy:(m,p)=>({t:`Easy ${m} min`, d:`pace ${p} /km`}), restT:'Rest, or an easy walk / stretching',
+         T:(P)=>({t:'Threshold: 4 × 1.6 km, 1 min jog recovery', d:`pace ${P.T} /km (${P.T400} per 400 m lap)`}),
+         I:(P)=>({t:'Interval: 5 × 1,000 m, 3 min jog recovery', d:`pace ${P.I1k} /km (${P.I400} per 400 m lap)`}),
+         L:(P)=>({t:'Long run 70–90 min', d:`Easy ${P.E} /km. Training for a marathon? Run the last 20 min at M pace ${P.M}`}),
+         Sx:(P)=>({t:'Easy 30 min + 6 × 200 m fast, 200 m walk recovery', d:`${P.R200} per 200 m`}),
+         lib:(P)=>[
+          ['E','Easy / long run',[`Continuous 30–60 min at ${P.E} /km`,`One long run a week, no more than ~25–30% of weekly volume`],'If you can’t speak in full sentences, you’re going too fast. Slower is always fine.'],
+          ['M','Marathon pace',[`90 min long run with the last 30 min at <b>${P.M}</b> /km`,`3 × 5 km at <b>${P.M}</b>, 5 min jog recovery`],'Use it only in the 8–12 weeks before a half or full marathon.'],
+          ['T','Threshold',[`20 min continuous tempo at <b>${P.T}</b> /km`,`Cruise: 4–5 × 1.6 km at <b>${P.T}</b>, 1 min jog recovery`],'Hard but controlled, a few words at a time. Keep T to ~10% of weekly volume per session.'],
+          ['I','Interval (VO₂max)',[`5 × 1,000 m at <b>${P.I1k}</b> /km, 3 min jog recovery`,`6 × 800 m at <b>${P.I400}</b> per 400 m lap, 2–3 min jog recovery`],'Reps of 3–5 min. Keep I to 8% of weekly volume or 10 km per session, whichever is less.'],
+          ['R','Repetition',[`8 × 400 m at <b>${P.R400}</b>, 400 m walk/jog recovery`,`8 × 200 m at <b>${P.R200}</b>, 200 m walk recovery`],'Focus on form and speed. Recover fully before the next rep.']] }
+  };
+  const TH = {};   // Thai text comes from the HTML itself
+  document.querySelectorAll('[data-i18n]').forEach(el => { TH[el.dataset.i18n] = el.innerHTML; });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { TH[el.dataset.i18nAria] = el.getAttribute('aria-label'); });
+  const META = {
+    th:{ desc: document.querySelector('meta[name="description"]').content },
+    en:{ desc:'Free running pace calculator. Enter a 3K/5K result, a 30-min Lactate Threshold test, or a Cooper 12-min test to get Easy, Marathon, Threshold, Interval and Rep paces plus a weekly plan.' }
+  };
+  let lang = 'th';
+  try{
+    const q = new URLSearchParams(location.search).get('lang');
+    const saved = localStorage.getItem('pacelab-lang');
+    if (q === 'en' || q === 'th') lang = q;
+    else if (saved === 'en' || saved === 'th') lang = saved;
+    else {
+      // in Thailand (many Thai phones use English UI) or a Thai browser -> Thai; everyone else -> English
+      const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+      lang = (tz === 'Asia/Bangkok' || /^th\b/i.test(navigator.language || '')) ? 'th' : 'en';
+    }
+  }catch(e){}
+  const L = () => S[lang];
+  function applyLang(){
+    const dict = lang === 'en' ? EN : TH;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const v = dict[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { const v = dict[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v); });
+    document.querySelector('meta[name="description"]').content = META[lang].desc;
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+    $('time-fix').hidden = true;
+  }
+  function setLang(l){
+    lang = l; try{ localStorage.setItem('pacelab-lang', l); }catch(e){}
+    applyLang(); calc();
+    try{ if (typeof gtag === 'function') gtag('event', 'select_language', { language: l }); }catch(e){}
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
   let mode = 'race';
   try{ const s = localStorage.getItem('pacelab-mode'); if (s) mode = s; }catch(e){}
@@ -394,7 +521,7 @@ footer a{color:var(--accent)}
     $('race-h').value = h; $('race-m').value = m; $('race-s').value = sec;
     const note = $('time-fix');
     note.hidden = !changed;
-    if (changed) note.textContent = `ปรับเป็น ${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')} ให้แล้ว (นาทีและวินาทีใส่ได้ 0–59)`;
+    if (changed) note.textContent = L().fix(`${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`);
     calc();
   }
   ['race-h','race-m','race-s'].forEach(id => $(id).addEventListener('change', tidyTime));
@@ -405,23 +532,23 @@ footer a{color:var(--accent)}
       d = parseFloat($('race-dist').value);
       const ts = raceSeconds();
       tMin = ts/60;
-      if (ts <= 0) err = 'ใส่เวลาที่วิ่งได้ก่อน';
-      else if (num('race-h') < 0 || num('race-m') < 0 || num('race-s') < 0) err = 'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง';
-      else side.push(['Pace เทส', fmt(tMin*60/(d/1000)) + ' /กม.']);
+      if (ts <= 0) err = L().errTime;
+      else if (num('race-h') < 0 || num('race-m') < 0 || num('race-s') < 0) err = L().errNeg;
+      else side.push([L().testPace, fmt(tMin*60/(d/1000)) + ' ' + L().km]);
     } else if (mode==='lt'){
       d = num('lt-dist')*1000; tMin = 30;
-      if (d < 1000) err = 'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)';
-      else side.push(['Threshold pace (ผลเทส)', fmt(1800/(d/1000)) + ' /กม.']);
+      if (d < 1000) err = L().errLt;
+      else side.push([L().ltPace, fmt(1800/(d/1000)) + ' ' + L().km]);
       const hr = num('lt-hr');
       if (hr >= 100) side.push(['LTHR', Math.round(hr) + ' bpm']);
     } else {
       d = num('cp-dist'); tMin = 12;
-      if (d < 800) err = 'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)';
-      else side.push(['VO₂max (สูตร Cooper)', ((d-504.9)/44.73).toFixed(1)]);
+      if (d < 800) err = L().errCp;
+      else side.push([L().cooper, ((d-504.9)/44.73).toFixed(1)]);
     }
 
     const V = err ? NaN : vdotOf(d, tMin);
-    if (!err && (V < 20 || V > 90)) err = 'ผลเทสอยู่นอกช่วงที่สูตรใช้ได้ ลองเช็กตัวเลขอีกครั้ง';
+    if (!err && (V < 20 || V > 90)) err = L().errRange;
     $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err;
     if (err){ $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
 
@@ -431,11 +558,11 @@ footer a{color:var(--accent)}
     const vE1 = velAt(V*0.59), vE2 = velAt(V*0.67);
     const vM = 42195/predict(V,42195), vT = velAt(V*0.88), vI = velAt(V*0.975), vR = 1609.34/predict(V,1609.34);
     const lanes = [
-      ['E','Easy','วิ่งสบาย คุยได้ วิ่งยาว ฟื้นตัว ~70–80% ของระยะซ้อมทั้งสัปดาห์', 'var(--z1)', `${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, '/กม.'],
-      ['M','Marathon','pace มาราธอน ใช้ในวิ่งยาวช่วงท้ายหรือ tempo ยาว', 'var(--z2)', fmt(secPerKm(vM)), '/กม.'],
-      ['T','Threshold','เหนื่อยแบบคุมได้ 20 นาทีต่อเนื่อง หรือ 4–5 × 1 กม. พัก 1 นาที', 'var(--z3)', fmt(secPerKm(vT)), `/กม. · ${fmt(per400(vT))} /400ม.`],
-      ['I','Interval','VO₂max เช่น 5 × 1,000 ม. พักจ็อกเท่าเวลาวิ่ง', 'var(--z4)', fmt(secPerKm(vI)), `/กม. · ${fmt(per400(vI))} /400ม.`],
-      ['R','Repetition','ความเร็ว ฟอร์ม เช่น 8 × 400 ม. พักเต็มที่', 'var(--z5)', fmt(per400(vR)), `/400ม. · ${fmt(secPerKm(vR))} /กม.`],
+      ['E','Easy',L().useE, 'var(--z1)', `${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, L().km],
+      ['M','Marathon',L().useM, 'var(--z2)', fmt(secPerKm(vM)), L().km],
+      ['T','Threshold',L().useT, 'var(--z3)', fmt(secPerKm(vT)), `${L().km} · ${fmt(per400(vT))} ${L().l400}`],
+      ['I','Interval',L().useI, 'var(--z4)', fmt(secPerKm(vI)), `${L().km} · ${fmt(per400(vI))} ${L().l400}`],
+      ['R','Repetition',L().useR, 'var(--z5)', fmt(per400(vR)), `${L().l400} · ${fmt(secPerKm(vR))} ${L().km}`],
     ];
     P = { E:`${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, M:fmt(secPerKm(vM)), T:fmt(secPerKm(vT)), T400:fmt(per400(vT)),
           I:fmt(secPerKm(vI)), I400:fmt(per400(vI)), I1k:fmt(secPerKm(vI)), R400:fmt(per400(vR)), R200:fmt(per400(vR)/2) };
@@ -445,7 +572,7 @@ footer a{color:var(--accent)}
         <div class="info"><div class="name"><span class="code">${c}</span><h3>${n}</h3></div><div class="use">${u}</div></div>
         <div class="pace"><span class="p">${p}</span><span class="u">${unit}</span></div></div>`).join('');
 
-    const races = [['1 ไมล์',1609.34],['3 กม.',3000],['5 กม.',5000],['10 กม.',10000],['ฮาล์ฟมาราธอน',21097.5],['มาราธอน',42195]];
+    const races = [...$('race-dist').options].map(o => [o.textContent, parseFloat(o.value)]);
     $('o-pred').innerHTML = races.map(([n,dd]) => { const t = predict(V,dd)*60;
       return `<tr><td>${n}</td><td class="num">${fmt(t)}</td><td class="num">${fmt(t/(dd/1000))}</td></tr>`; }).join('');
 
@@ -453,10 +580,11 @@ footer a{color:var(--accent)}
     const showHr = mode==='lt' && hr >= 100;
     $('hr-block').hidden = !showHr;
     if (showHr){
-      const z = [['Z1','var(--z1)',0,.85,'ฟื้นตัว เบามาก'],['Z2','var(--z1)',.85,.89,'Aerobic / Easy'],['Z3','var(--z2)',.90,.94,'Tempo'],
-                 ['Z4','var(--z3)',.95,.99,'ใต้ threshold'],['Z5a','var(--z4)',1.00,1.02,'Threshold'],['Z5b','var(--z4)',1.03,1.06,'Aerobic capacity'],['Z5c','var(--z5)',1.06,null,'Anaerobic']];
+      const hz = L().hz;
+      const z = [['Z1','var(--z1)',0,.85,hz[0]],['Z2','var(--z1)',.85,.89,hz[1]],['Z3','var(--z2)',.90,.94,hz[2]],
+                 ['Z4','var(--z3)',.95,.99,hz[3]],['Z5a','var(--z4)',1.00,1.02,hz[4]],['Z5b','var(--z4)',1.03,1.06,hz[5]],['Z5c','var(--z5)',1.06,null,hz[6]]];
       $('o-hr').innerHTML = z.map(([n,c,a,b,f]) => {
-        const r = a===0 ? `ต่ำกว่า ${Math.round(hr*b)}` : b===null ? `มากกว่า ${Math.round(hr*a)}` : `${Math.round(hr*a)}–${Math.round(hr*b)}`;
+        const r = a===0 ? `${L().below} ${Math.round(hr*b)}` : b===null ? `${L().above} ${Math.round(hr*a)}` : `${Math.round(hr*a)}–${Math.round(hr*b)}`;
         return `<tr><td style="--c:${c}"><span class="dot"></span>${n}</td><td class="num">${r}</td><td>${f}</td></tr>`; }).join('');
     }
   }
@@ -465,21 +593,19 @@ footer a{color:var(--accent)}
   let P = null, days = 4;
   try{ const d = parseInt(localStorage.getItem('pacelab-days')); if ([3,4,5].includes(d)) days = d; }catch(e){}
   const Z = {E:'var(--z1)',M:'var(--z2)',T:'var(--z3)',I:'var(--z4)',R:'var(--z5)',X:'var(--muted)'};
-  const chip = c => `<span class="chip" style="--c:${Z[c]}">${c==='X'?'พัก':c}</span>`;
+  const chip = c => `<span class="chip" style="--c:${Z[c]}">${c==='X'?L().rest:c}</span>`;
 
   function plan(){
-    const easy = m => ({z:'E', t:`Easy ${m} นาที`, d:`pace ${P.E} /กม.`});
-    const rest = {z:'X', t:'พัก หรือเดินเบา ๆ / ยืดเหยียด', d:''};
-    const T = {z:'T', t:'Threshold: 4 × 1.6 กม. พักจ็อก 1 นาที', d:`pace ${P.T} /กม. (${P.T400} ต่อรอบ 400 ม.)`};
-    const I = {z:'I', t:'Interval: 5 × 1,000 ม. พักจ็อก 3 นาที', d:`pace ${P.I1k} /กม. (${P.I400} ต่อรอบ 400 ม.)`};
-    const L = {z:'E', t:'วิ่งยาว 70–90 นาที', d:`Easy ${P.E} /กม. ถ้าซ้อมมาราธอน 20 นาทีท้ายใช้ pace M ${P.M}`};
-    const S = {z:'R', t:'Easy 30 นาที + 6 × 200 ม. เร็ว พักเดิน 200 ม.', d:`200 ม. ละ ${P.R200}`};
-    const map = {
-      3: [['จันทร์',rest],['อังคาร',T],['พุธ',rest],['พฤหัส',easy(35)],['ศุกร์',rest],['เสาร์',rest],['อาทิตย์',L]],
-      4: [['จันทร์',rest],['อังคาร',I],['พุธ',easy(40)],['พฤหัส',rest],['ศุกร์',T],['เสาร์',rest],['อาทิตย์',L]],
-      5: [['จันทร์',rest],['อังคาร',I],['พุธ',easy(45)],['พฤหัส',T],['ศุกร์',rest],['เสาร์',S],['อาทิตย์',L]]
+    const x = L();
+    const easy = m => ({z:'E', ...x.easy(m, P.E)});
+    const rest = {z:'X', t:x.restT, d:''};
+    const T = {z:'T', ...x.T(P)}, I = {z:'I', ...x.I(P)}, Lg = {z:'E', ...x.L(P)}, Sp = {z:'R', ...x.Sx(P)};
+    const week = {
+      3: [rest, T, rest, easy(35), rest, rest, Lg],
+      4: [rest, I, easy(40), rest, T, rest, Lg],
+      5: [rest, I, easy(45), T, rest, Sp, Lg]
     };
-    return map[days];
+    return week[days].map((w,i) => [x.days[i], w]);
   }
 
   function renderGuide(){
@@ -487,13 +613,7 @@ footer a{color:var(--accent)}
     document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.d===days));
     $('o-week').innerHTML = plan().map(([day,w]) =>
       `<tr><td>${day}</td><td>${chip(w.z)}<span class="wk">${w.t}</span>${w.d?`<div class="wd">${w.d}</div>`:''}</td></tr>`).join('');
-    const lib = [
-      ['E','Easy / วิ่งยาว',[`วิ่งต่อเนื่อง 30–60 นาที ที่ ${P.E} /กม.`,`วิ่งยาวสัปดาห์ละครั้ง ไม่เกิน ~25–30% ของระยะทั้งสัปดาห์`],'ถ้าคุยเป็นประโยคไม่ได้ แปลว่าเร็วไป ช้ากว่านี้ได้เสมอ'],
-      ['M','Marathon pace',[`วิ่งยาว 90 นาที โดย 30 นาทีท้ายใช้ <b>${P.M}</b> /กม.`,`3 × 5 กม. ที่ <b>${P.M}</b> พักจ็อก 5 นาที`],'ใช้เฉพาะช่วงเตรียมแข่งฮาล์ฟ/มาราธอน 8–12 สัปดาห์ก่อนวันแข่ง'],
-      ['T','Threshold',[`Tempo ต่อเนื่อง 20 นาที ที่ <b>${P.T}</b> /กม.`,`Cruise: 4–5 × 1.6 กม. ที่ <b>${P.T}</b> พักจ็อก 1 นาที`],'เหนื่อยแต่คุมได้ พูดได้ทีละคำ T รวมต่อครั้งไม่เกิน ~10% ของระยะทั้งสัปดาห์'],
-      ['I','Interval (VO₂max)',[`5 × 1,000 ม. ที่ <b>${P.I1k}</b> /กม. พักจ็อก 3 นาที`,`6 × 800 ม. ที่ <b>${P.I400}</b> ต่อรอบ 400 ม. พักจ็อก 2–3 นาที`],'แต่ละเที่ยว 3–5 นาที I รวมต่อครั้งไม่เกิน 8% ของระยะทั้งสัปดาห์ หรือ 10 กม.'],
-      ['R','Repetition',[`8 × 400 ม. ที่ <b>${P.R400}</b> พักเดิน/จ็อก 400 ม.`,`8 × 200 ม. ที่ <b>${P.R200}</b> พักเดิน 200 ม.`],'เน้นฟอร์มและความเร็ว พักให้หายเหนื่อยเต็มที่ก่อนเที่ยวถัดไป']
-    ];
+    const lib = L().lib(P);
     $('o-lib').innerHTML = lib.map(([c,n,items,tip]) =>
       `<div class="wo" style="--c:${Z[c]}"><h3>${chip(c)}${n}</h3><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul><div class="tip">${tip}</div></div>`).join('');
   }
@@ -515,6 +635,8 @@ footer a{color:var(--accent)}
     calcTimer = setTimeout(() => { const v = parseFloat($('o-vdot').textContent); if (v) track('calculate', { test: mode, vdot: Math.round(v) }); }, 1500);
   }));
 
+  applyLang();
+  try{ if (typeof gtag === 'function') gtag('set', 'user_properties', { ui_language: lang }); }catch(e){}
   setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
 })();
 </script>
