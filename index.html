@@ -153,6 +153,26 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .wo .tip{font-size:.82rem;color:var(--muted)}
 .wo b{font-family:var(--display);font-variant-numeric:tabular-nums}
 
+/* saved results (this device only) */
+#results{display:flex;flex-direction:column;gap:10px}
+.save-row{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.save-btn{appearance:none;border:1px solid var(--accent);background:var(--surface);color:var(--accent);font:600 .92rem var(--body);padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px}
+.save-btn:hover{background:var(--soft)}
+.save-btn[data-done="1"]{background:var(--accent);color:var(--accent-ink)}
+.save-btn:focus-visible,.link-btn:focus-visible,.hist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.save-note{font-size:.8rem;color:var(--muted)}
+.hist-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.hist-head h2{font-size:1.05rem}
+.link-btn{appearance:none;border:0;background:none;color:var(--muted);font:500 .82rem var(--body);cursor:pointer;text-decoration:underline;padding:4px}
+.link-btn[data-arm="1"]{color:var(--z5)}
+.hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.hist button{appearance:none;width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--ink);font:inherit;cursor:pointer}
+.hist button:hover{border-color:var(--accent)}
+.hist .hd{font-size:.8rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.hist .hl{font-size:.9rem;min-width:0}
+.hist .hv{font:700 1.05rem var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hist .hv small{font:600 .75rem var(--body);margin-left:6px}
+.hist .up{color:var(--z1)} .hist .down{color:var(--z5)}
 /* RunNearMe links */
 .rnm-cta{display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:end;text-decoration:none;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .rnm-cta:hover{border-color:var(--accent)}
@@ -283,6 +303,14 @@ footer a{color:var(--accent)}
       <div class="big" id="o-vdot">–</div>
     </div>
     <div class="side" id="o-side"></div>
+  </div>
+  <div class="save-row">
+    <button type="button" id="save-res" class="save-btn" data-i18n="sv.btn">บันทึกผลนี้</button>
+    <span class="save-note" id="save-note" data-i18n="sv.note">เก็บไว้ในเครื่องนี้ ไม่ต้องสมัครสมาชิก</span>
+  </div>
+  <div id="hist" hidden>
+    <div class="hist-head"><h2 data-i18n="sv.h">ผลเทสของคุณ</h2><button type="button" id="hist-clear" class="link-btn" data-i18n="sv.clear">ล้างประวัติ</button></div>
+    <ol class="hist" id="o-hist"></ol>
   </div>
 </div>
 
@@ -429,6 +457,7 @@ footer a{color:var(--accent)}
     'wk.h':'Sample training week', 'wk.aria':'Training days per week', 'wk.d3':'3 days', 'wk.d4':'4 days', 'wk.d5':'5 days', 'wk.c1':'Day', 'wk.c2':'Workout',
     'lib.h':'Workout library by zone',
     'lib.note':'Every hard day: warm up with 10–15 min Easy + 4 × 20 s strides, and cool down with 10 min Easy. If you can’t hold the target pace through the set, your body isn’t ready that day. Stop the set and jog home Easy.',
+    'sv.btn':'Save this result', 'sv.note':'Saved on this device only, no account needed', 'sv.h':'Your test results', 'sv.clear':'Clear history',
     'rnm.t':'Got your paces. Where should you run today?', 'rnm.d':'Running parks in Bangkok with route distances, water, toilets, lockers, opening hours and how to get there by BTS/MRT.', 'rnm.go':'Find a park near you →',
     'rnm2.t':'Ran your test or long run in a park? Share the route with other runners', 'rnm2.d':'Upload a .fit / .gpx file from Garmin or draw the route on the map. Free, sign in with Google.', 'rnm2.go':'Add a route →',
     'gear.h':'Recommended gear', 'gear.aff':'Affiliate links · Shopee Thailand, ships within Thailand', 'gear.go':'View on Shopee →',
@@ -445,7 +474,7 @@ footer a{color:var(--accent)}
   };
   // strings built by the script
   const S = {
-    th:{ errTime:'ใส่เวลาที่วิ่งได้ก่อน', errNeg:'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง', errLt:'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)', errCp:'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)',
+    th:{ saved:'บันทึกแล้ว ✓', confirmClear:'กดอีกครั้งเพื่อลบทั้งหมด', ltLabel:'LT 30 นาที', cpLabel:'Cooper 12 นาที', locale:'th-TH', errTime:'ใส่เวลาที่วิ่งได้ก่อน', errNeg:'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง', errLt:'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)', errCp:'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)',
          errRange:'ผลเทสอยู่นอกช่วงที่สูตรใช้ได้ ลองเช็กตัวเลขอีกครั้ง', testPace:'Pace เทส', ltPace:'Threshold pace (ผลเทส)', cooper:'VO₂max (สูตร Cooper)',
          km:'/กม.', l400:'/400ม.', lap400:'ต่อรอบ 400 ม.',
          fix:(t)=>`ปรับเป็น ${t} ให้แล้ว (นาทีและวินาทีใส่ได้ 0–59)`,
@@ -464,7 +493,7 @@ footer a{color:var(--accent)}
           ['T','Threshold',[`Tempo ต่อเนื่อง 20 นาที ที่ <b>${P.T}</b> /กม.`,`Cruise: 4–5 × 1.6 กม. ที่ <b>${P.T}</b> พักจ็อก 1 นาที`],'เหนื่อยแต่คุมได้ พูดได้ทีละคำ T รวมต่อครั้งไม่เกิน ~10% ของระยะทั้งสัปดาห์'],
           ['I','Interval (VO₂max)',[`5 × 1,000 ม. ที่ <b>${P.I1k}</b> /กม. พักจ็อก 3 นาที`,`6 × 800 ม. ที่ <b>${P.I400}</b> ต่อรอบ 400 ม. พักจ็อก 2–3 นาที`],'แต่ละเที่ยว 3–5 นาที I รวมต่อครั้งไม่เกิน 8% ของระยะทั้งสัปดาห์ หรือ 10 กม.'],
           ['R','Repetition',[`8 × 400 ม. ที่ <b>${P.R400}</b> พักเดิน/จ็อก 400 ม.`,`8 × 200 ม. ที่ <b>${P.R200}</b> พักเดิน 200 ม.`],'เน้นฟอร์มและความเร็ว พักให้หายเหนื่อยเต็มที่ก่อนเที่ยวถัดไป']] },
-    en:{ errTime:'Enter your finish time first.', errNeg:'Time can’t be negative. Check the numbers.', errLt:'Enter the distance you covered in 30 minutes (km).', errCp:'Enter the distance you covered in 12 minutes (meters).',
+    en:{ saved:'Saved ✓', confirmClear:'Tap again to delete all', ltLabel:'LT 30 min', cpLabel:'Cooper 12 min', locale:'en-GB', errTime:'Enter your finish time first.', errNeg:'Time can’t be negative. Check the numbers.', errLt:'Enter the distance you covered in 30 minutes (km).', errCp:'Enter the distance you covered in 12 minutes (meters).',
          errRange:'That result is outside the range the formula covers. Check the numbers.', testPace:'Test pace', ltPace:'Threshold pace (from test)', cooper:'VO₂max (Cooper formula)',
          km:'/km', l400:'/400m', lap400:'per 400 m lap',
          fix:(t)=>`Adjusted to ${t} (minutes and seconds go from 0–59)`,
@@ -521,10 +550,11 @@ footer a{color:var(--accent)}
     document.querySelectorAll('a[data-rnm]').forEach(el => { el.href = rnmUrl(el.dataset.rnm, el.dataset.place); });
     document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
     $('time-fix').hidden = true;
+    delete $('save-res').dataset.done; delete $('hist-clear').dataset.arm;
   }
   function setLang(l){
     lang = l; try{ localStorage.setItem('pacelab-lang', l); }catch(e){}
-    applyLang(); calc();
+    applyLang(); calc(); renderHistory();
     try{ if (typeof gtag === 'function') gtag('event', 'select_language', { language: l }); }catch(e){}
   }
   document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
@@ -658,6 +688,74 @@ footer a{color:var(--accent)}
 
   document.querySelectorAll('.gear img').forEach(img => img.addEventListener('error', () => { img.hidden = true; }));
 
+  // ---- remember inputs + saved results (this device only; nothing is sent anywhere) ----
+  const INPUT_IDS = ['race-dist','race-h','race-m','race-s','lt-dist','lt-hr','cp-dist'];
+  const store = {
+    get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+    set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } },
+    del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+  };
+  const readInputs = () => Object.fromEntries(INPUT_IDS.map(id => [id, $(id).value]));
+  function writeInputs(v){ if (!v) return; INPUT_IDS.forEach(id => { if (v[id] != null && v[id] !== '') $(id).value = v[id]; }); }
+  writeInputs(store.get('pacelab-inputs', null));
+  let saveTimer;
+  document.querySelectorAll('.panel input, .panel select').forEach(el => el.addEventListener('input', () => {
+    clearTimeout(saveTimer); saveTimer = setTimeout(() => store.set('pacelab-inputs', readInputs()), 600);
+    resetSaveBtn();
+  }));
+
+  const HKEY = 'pacelab-history', HMAX = 12;
+  function resultLabel(e){
+    const v = e.inputs;
+    if (e.mode === 'race'){
+      const opt = [...$('race-dist').options].find(o => o.value === v['race-dist']);
+      const t = Math.round((+v['race-h']||0)*3600 + (+v['race-m']||0)*60 + (+v['race-s']||0));
+      return `${opt ? opt.textContent : ''} ${fmt(t)}`;
+    }
+    if (e.mode === 'lt') return `${L().ltLabel} · ${v['lt-dist']} km${+v['lt-hr'] >= 100 ? ` · ${Math.round(v['lt-hr'])} bpm` : ''}`;
+    return `${L().cpLabel} · ${v['cp-dist']} m`;
+  }
+  function renderHistory(){
+    const h = store.get(HKEY, []);
+    $('hist').hidden = !h.length;
+    const df = new Intl.DateTimeFormat(L().locale, { day:'numeric', month:'short', year:'2-digit' });
+    $('o-hist').innerHTML = h.map((e,i) => {
+      const prev = h.slice(i+1).find(x => x.mode === e.mode);
+      const diff = prev ? e.vdot - prev.vdot : 0;
+      const ch = prev && Math.abs(diff) >= 0.1 ? `<small class="${diff > 0 ? 'up' : 'down'}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}</small>` : '';
+      return `<li><button type="button" data-i="${i}"><span class="hd">${df.format(new Date(e.t))}</span><span class="hl">${resultLabel(e)}</span><span class="hv">${e.vdot.toFixed(1)}${ch}</span></button></li>`;
+    }).join('');
+  }
+  function resetSaveBtn(){ const b = $('save-res'); if (b.dataset.done){ delete b.dataset.done; b.textContent = (lang === 'en' ? EN : TH)['sv.btn']; } }
+  $('save-res').addEventListener('click', () => {
+    const v = parseFloat($('o-vdot').textContent);
+    if (!v) return;
+    const h = store.get(HKEY, []);
+    const entry = { t: Date.now(), mode, vdot: Math.round(v*10)/10, inputs: readInputs() };
+    const same = h[0] && h[0].mode === entry.mode && JSON.stringify(h[0].inputs) === JSON.stringify(entry.inputs);
+    if (same) h[0].t = entry.t; else h.unshift(entry);
+    if (store.set(HKEY, h.slice(0, HMAX))){
+      const b = $('save-res'); b.dataset.done = '1'; b.textContent = L().saved;
+      renderHistory(); track('save_result', { test: mode, vdot: Math.round(v) });
+    } else {
+      $('save-note').textContent = lang === 'en' ? 'This browser blocks saving (private mode?).' : 'เบราว์เซอร์นี้ไม่ให้บันทึก (อาจเปิดโหมดไม่ระบุตัวตน)';
+    }
+  });
+  $('o-hist').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-i]'); if (!btn) return;
+    const entry = store.get(HKEY, [])[+btn.dataset.i]; if (!entry) return;
+    writeInputs(entry.inputs); store.set('pacelab-inputs', entry.inputs);
+    setMode(entry.mode); resetSaveBtn();
+    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  let armTimer;
+  $('hist-clear').addEventListener('click', () => {
+    const b = $('hist-clear');
+    if (b.dataset.arm){ store.del(HKEY); renderHistory(); delete b.dataset.arm; b.textContent = (lang === 'en' ? EN : TH)['sv.clear']; return; }
+    b.dataset.arm = '1'; b.textContent = L().confirmClear;
+    clearTimeout(armTimer); armTimer = setTimeout(() => { delete b.dataset.arm; b.textContent = (lang === 'en' ? EN : TH)['sv.clear']; }, 3000);
+  });
+
   // Google Analytics events
   const track = (name, params) => { try { if (typeof gtag === 'function') gtag('event', name, params); } catch(e){} };
   document.querySelectorAll('a[data-gear]').forEach(a => a.addEventListener('click', () =>
@@ -674,6 +772,7 @@ footer a{color:var(--accent)}
   applyLang();
   try{ if (typeof gtag === 'function') gtag('set', 'user_properties', { ui_language: lang }); }catch(e){}
   setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
+  renderHistory();
 })();
 </script>
 </body>
