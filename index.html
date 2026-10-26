@@ -158,6 +158,7 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .save-row{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
 .save-btn{appearance:none;border:1px solid var(--accent);background:var(--surface);color:var(--accent);font:600 .92rem var(--body);padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px}
 .save-btn:hover{background:var(--soft)}
+.save-rnm{text-decoration:none;display:inline-flex;align-items:center;border-color:var(--line);color:var(--ink)}
 .save-btn[data-done="1"]{background:var(--accent);color:var(--accent-ink)}
 .save-btn:focus-visible,.link-btn:focus-visible,.hist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .save-note{font-size:.8rem;color:var(--muted)}
@@ -306,7 +307,8 @@ footer a{color:var(--accent)}
   </div>
   <div class="save-row">
     <button type="button" id="save-res" class="save-btn" data-i18n="sv.btn">บันทึกผลนี้</button>
-    <span class="save-note" id="save-note" data-i18n="sv.note">เก็บไว้ในเครื่องนี้ ไม่ต้องสมัครสมาชิก</span>
+    <a class="save-btn save-rnm" id="save-rnm" data-place="save_pace" target="_blank" rel="noopener" data-i18n="sv.rnm">บันทึกลง RunNearMe ↗</a>
+    <span class="save-note" id="save-note" data-i18n="sv.note">“บันทึกผลนี้” เก็บไว้ในเครื่องนี้ · RunNearMe เก็บในบัญชี ดูได้ทุกเครื่อง</span>
   </div>
   <div id="hist" hidden>
     <div class="hist-head"><h2 data-i18n="sv.h">ผลเทสของคุณ</h2><button type="button" id="hist-clear" class="link-btn" data-i18n="sv.clear">ล้างประวัติ</button></div>
@@ -457,7 +459,7 @@ footer a{color:var(--accent)}
     'wk.h':'Sample training week', 'wk.aria':'Training days per week', 'wk.d3':'3 days', 'wk.d4':'4 days', 'wk.d5':'5 days', 'wk.c1':'Day', 'wk.c2':'Workout',
     'lib.h':'Workout library by zone',
     'lib.note':'Every hard day: warm up with 10–15 min Easy + 4 × 20 s strides, and cool down with 10 min Easy. If you can’t hold the target pace through the set, your body isn’t ready that day. Stop the set and jog home Easy.',
-    'sv.btn':'Save this result', 'sv.note':'Saved on this device only, no account needed', 'sv.h':'Your test results', 'sv.clear':'Clear history',
+    'sv.btn':'Save this result', 'sv.rnm':'Save to RunNearMe ↗', 'sv.note':'“Save this result” keeps it on this device. RunNearMe keeps it in your account, across devices.', 'sv.h':'Your test results', 'sv.clear':'Clear history',
     'rnm.t':'Got your paces. Where should you run today?', 'rnm.d':'Running parks in Bangkok with route distances, water, toilets, lockers, opening hours and how to get there by BTS/MRT.', 'rnm.go':'Find a park near you →',
     'rnm2.t':'Ran your test or long run in a park? Share the route with other runners', 'rnm2.d':'Upload a .fit / .gpx file from Garmin or draw the route on the map. Free, sign in with Google.', 'rnm2.go':'Add a route →',
     'gear.h':'Recommended gear', 'gear.aff':'Affiliate links · Shopee Thailand, ships within Thailand', 'gear.go':'View on Shopee →',
@@ -614,10 +616,13 @@ footer a{color:var(--accent)}
 
     const V = err ? NaN : vdotOf(d, tMin);
     if (!err && (V < 20 || V > 90)) err = L().errRange;
-    $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err;
+    $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err; document.querySelector('.save-row').hidden = !!err;
     if (err){ $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
 
     $('o-vdot').textContent = V.toFixed(1);
+    { const q = mode === 'race' ? `test=race&d=${$('race-dist').value}&t=${raceSeconds()}`
+              : mode === 'lt' ? `test=lt&d=${Math.round(num('lt-dist')*1000)}` : `test=cooper&d=${Math.round(num('cp-dist'))}`;
+      $('save-rnm').href = rnmUrl('/pace/save?' + q, 'save_pace'); }
     $('o-side').innerHTML = side.map(([k,v]) => `<div><span class="v">${v}</span><span class="k">${k}</span></div>`).join('');
 
     const vE1 = velAt(V*0.59), vE2 = velAt(V*0.67);
