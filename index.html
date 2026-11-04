@@ -181,7 +181,8 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .rnm-k{grid-column:1/-1;font:700 .72rem var(--display);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .rnm-t{grid-column:1/-1;font-weight:600;font-size:1.05rem;line-height:1.35}
 .rnm-d{font-size:.86rem;color:var(--muted);min-width:0}
-.rnm-go{font-weight:600;color:var(--accent);white-space:nowrap}
+.rnm-go{font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:10px 18px;white-space:nowrap;justify-self:start}
+.rnm-top{margin-top:14px;border-color:var(--accent)}
 .rnm-alt{background:var(--surface)}
 .rnm-inline{color:var(--accent);font-weight:600;text-decoration:none;white-space:nowrap}
 .rnm-inline:hover{text-decoration:underline}
@@ -310,6 +311,12 @@ footer a{color:var(--accent)}
     <a class="save-btn save-rnm" id="save-rnm" data-place="save_pace" target="_blank" rel="noopener" data-i18n="sv.rnm">บันทึกลง RunNearMe ↗</a>
     <span class="save-note" id="save-note" data-i18n="sv.note">“บันทึกผลนี้” เก็บไว้ในเครื่องนี้ · RunNearMe เก็บในบัญชี ดูได้ทุกเครื่อง</span>
   </div>
+  <a class="rnm-cta rnm-top" id="rnm-top" data-rnm="/search?sort=near" data-place="after_result" target="_blank" rel="noopener">
+    <span class="rnm-k">RunNearMe</span>
+    <span class="rnm-t" id="rnm-top-t">รู้ pace แล้ว วันนี้ไปวิ่งที่ไหนดี?</span>
+    <span class="rnm-d" data-i18n="rnm.d2">สวนวิ่งใกล้คุณ กรุงเทพฯ และอีก 15 จังหวัด พร้อมเส้นทางวัดระยะ น้ำดื่ม ห้องน้ำ เวลาเปิดปิด ใช้ฟรี</span>
+    <span class="rnm-go" data-i18n="rnm.go">หาสวนใกล้คุณ →</span>
+  </a>
   <div id="hist" hidden>
     <div class="hist-head"><h2 data-i18n="sv.h">ผลเทสของคุณ</h2><button type="button" id="hist-clear" class="link-btn" data-i18n="sv.clear">ล้างประวัติ</button></div>
     <ol class="hist" id="o-hist"></ol>
@@ -321,7 +328,7 @@ footer a{color:var(--accent)}
 <a class="rnm-cta" data-rnm="/search?sort=near" data-place="after_paces" target="_blank" rel="noopener">
   <span class="rnm-k">RunNearMe</span>
   <span class="rnm-t" data-i18n="rnm.t">รู้ pace แล้ว วันนี้ไปวิ่งที่ไหนดี?</span>
-  <span class="rnm-d" data-i18n="rnm.d">รวมสวนวิ่งในกรุงเทพฯ พร้อมระยะเส้นทาง น้ำดื่ม ห้องน้ำ ล็อกเกอร์ เวลาเปิดปิด และการเดินทางด้วย BTS/MRT</span>
+  <span class="rnm-d" data-i18n="rnm.d">รวมสวนวิ่งในกรุงเทพฯ และอีก 15 จังหวัด พร้อมระยะเส้นทาง น้ำดื่ม ห้องน้ำ ล็อกเกอร์ เวลาเปิดปิด และการเดินทางด้วย BTS/MRT</span>
   <span class="rnm-go" data-i18n="rnm.go">หาสวนใกล้คุณ →</span>
 </a>
 
@@ -460,7 +467,7 @@ footer a{color:var(--accent)}
     'lib.h':'Workout library by zone',
     'lib.note':'Every hard day: warm up with 10–15 min Easy + 4 × 20 s strides, and cool down with 10 min Easy. If you can’t hold the target pace through the set, your body isn’t ready that day. Stop the set and jog home Easy.',
     'sv.btn':'Save this result', 'sv.rnm':'Save to RunNearMe ↗', 'sv.note':'“Save this result” keeps it on this device. RunNearMe keeps it in your account, across devices.', 'sv.h':'Your test results', 'sv.clear':'Clear history',
-    'rnm.t':'Got your paces. Where should you run today?', 'rnm.d':'Running parks in Bangkok with route distances, water, toilets, lockers, opening hours and how to get there by BTS/MRT.', 'rnm.go':'Find a park near you →',
+    'rnm.t':'Got your paces. Where should you run today?', 'rnm.d2':'Running parks near you in Bangkok and 15 more provinces, with measured routes, water, toilets and opening hours. Free.', 'rnm.d':'Running parks in Bangkok and 15 more provinces with route distances, water, toilets, lockers, opening hours and how to get there by BTS/MRT.', 'rnm.go':'Find a park near you →',
     'rnm2.t':'Ran your test or long run in a park? Share the route with other runners', 'rnm2.d':'Upload a .fit / .gpx file from Garmin or draw the route on the map. Free, sign in with Google.', 'rnm2.go':'Add a route →',
     'gear.h':'Recommended gear', 'gear.aff':'Affiliate links · Shopee Thailand, ships within Thailand', 'gear.go':'View on Shopee →',
     'g1.n':'aminoVITAL Red Shot energy gel', 'g1.w':'For long runs over 60–75 min, one every 30–45 min',
@@ -483,7 +490,7 @@ footer a{color:var(--accent)}
          useE:'วิ่งสบาย คุยได้ วิ่งยาว ฟื้นตัว ~70–80% ของระยะซ้อมทั้งสัปดาห์', useM:'pace มาราธอน ใช้ในวิ่งยาวช่วงท้ายหรือ tempo ยาว',
          useT:'เหนื่อยแบบคุมได้ 20 นาทีต่อเนื่อง หรือ 4–5 × 1 กม. พัก 1 นาที', useI:'VO₂max เช่น 5 × 1,000 ม. พักจ็อกเท่าเวลาวิ่ง', useR:'ความเร็ว ฟอร์ม เช่น 8 × 400 ม. พักเต็มที่',
          below:'ต่ำกว่า', above:'มากกว่า', hz:['ฟื้นตัว เบามาก','Aerobic / Easy','Tempo','ใต้ threshold','Threshold','Aerobic capacity','Anaerobic'],
-         rest:'พัก', days:['จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์','อาทิตย์'],
+         rnmTop:(km)=>`Easy run 45 นาทีของคุณ ≈ ${km} กม. ไปวิ่งที่ไหนดี?`, rest:'พัก', days:['จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์','อาทิตย์'],
          easy:(m,p)=>({t:`Easy ${m} นาที`, d:`pace ${p} /กม.`}), restT:'พัก หรือเดินเบา ๆ / ยืดเหยียด',
          T:(P)=>({t:'Threshold: 4 × 1.6 กม. พักจ็อก 1 นาที', d:`pace ${P.T} /กม. (${P.T400} ต่อรอบ 400 ม.)`}),
          I:(P)=>({t:'Interval: 5 × 1,000 ม. พักจ็อก 3 นาที', d:`pace ${P.I1k} /กม. (${P.I400} ต่อรอบ 400 ม.)`}),
@@ -502,7 +509,7 @@ footer a{color:var(--accent)}
          useE:'Comfortable and conversational. Long runs and recovery, ~70–80% of weekly volume', useM:'Marathon pace, for the end of long runs or long tempos',
          useT:'Comfortably hard: 20 min continuous, or 4–5 × 1 km with 1 min rest', useI:'VO₂max work, e.g. 5 × 1,000 m with equal-time jog recovery', useR:'Speed and form, e.g. 8 × 400 m with full recovery',
          below:'below', above:'above', hz:['Recovery, very easy','Aerobic / Easy','Tempo','Sub-threshold','Threshold','Aerobic capacity','Anaerobic'],
-         rest:'Rest', days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+         rnmTop:(km)=>`Your 45-min easy run ≈ ${km} km. Where will you run it?`, rest:'Rest', days:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
          easy:(m,p)=>({t:`Easy ${m} min`, d:`pace ${p} /km`}), restT:'Rest, or an easy walk / stretching',
          T:(P)=>({t:'Threshold: 4 × 1.6 km, 1 min jog recovery', d:`pace ${P.T} /km (${P.T400} per 400 m lap)`}),
          I:(P)=>({t:'Interval: 5 × 1,000 m, 3 min jog recovery', d:`pace ${P.I1k} /km (${P.I400} per 400 m lap)`}),
@@ -616,7 +623,7 @@ footer a{color:var(--accent)}
 
     const V = err ? NaN : vdotOf(d, tMin);
     if (!err && (V < 20 || V > 90)) err = L().errRange;
-    $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err; document.querySelector('.save-row').hidden = !!err;
+    $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err; document.querySelector('.save-row').hidden = !!err; $('rnm-top').hidden = !!err;
     if (err){ $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
 
     $('o-vdot').textContent = V.toFixed(1);
@@ -636,6 +643,7 @@ footer a{color:var(--accent)}
     ];
     P = { E:`${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, M:fmt(secPerKm(vM)), T:fmt(secPerKm(vT)), T400:fmt(per400(vT)),
           I:fmt(secPerKm(vI)), I400:fmt(per400(vI)), I1k:fmt(secPerKm(vI)), R400:fmt(per400(vR)), R200:fmt(per400(vR)/2) };
+    { const easySec = (secPerKm(vE1)+secPerKm(vE2))/2; $('rnm-top-t').textContent = L().rnmTop((45*60/easySec).toFixed(1)); }
     renderGuide();
     $('o-lanes').innerHTML = lanes.map(([c,n,u,col,p,unit]) =>
       `<div class="lane" style="--c:${col}"><div class="bar"></div>
