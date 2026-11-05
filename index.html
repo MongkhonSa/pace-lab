@@ -153,27 +153,26 @@ td .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:v
 .wo .tip{font-size:.82rem;color:var(--muted)}
 .wo b{font-family:var(--display);font-variant-numeric:tabular-nums}
 
-/* saved results (this device only) */
+/* result actions: share image, save to RunNearMe */
 #results{display:flex;flex-direction:column;gap:10px}
 .save-row{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
 .save-btn{appearance:none;border:1px solid var(--accent);background:var(--surface);color:var(--accent);font:600 .92rem var(--body);padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px}
 .save-btn:hover{background:var(--soft)}
 .save-rnm{text-decoration:none;display:inline-flex;align-items:center;border-color:var(--line);color:var(--ink)}
 .save-btn[data-done="1"]{background:var(--accent);color:var(--accent-ink)}
-.save-btn:focus-visible,.link-btn:focus-visible,.hist button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.save-btn:focus-visible,.share-modal a:focus-visible,.share-modal button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .save-note{font-size:.8rem;color:var(--muted)}
-.hist-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.hist-head h2{font-size:1.05rem}
-.link-btn{appearance:none;border:0;background:none;color:var(--muted);font:500 .82rem var(--body);cursor:pointer;text-decoration:underline;padding:4px}
-.link-btn[data-arm="1"]{color:var(--z5)}
-.hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
-.hist button{appearance:none;width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--ink);font:inherit;cursor:pointer}
-.hist button:hover{border-color:var(--accent)}
-.hist .hd{font-size:.8rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-.hist .hl{font-size:.9rem;min-width:0}
-.hist .hv{font:700 1.05rem var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
-.hist .hv small{font:600 .75rem var(--body);margin-left:6px}
-.hist .up{color:var(--z1)} .hist .down{color:var(--z5)}
+.share-btn{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.share-btn:hover{background:var(--accent);opacity:.9}
+.share-btn:disabled{opacity:.6;cursor:wait}
+.share-modal{position:fixed;inset:0;z-index:50;background:rgba(5,8,14,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px}
+.share-modal img{max-height:72vh;max-width:100%;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.share-modal p{margin:0;color:#E8EDF5;font-size:.92rem;text-align:center;max-width:36ch}
+.share-modal .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.share-modal a,.share-modal button{appearance:none;border:1px solid #6E8CFF;border-radius:999px;padding:9px 18px;font:600 .92rem var(--body);min-height:42px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.share-modal a{background:#6E8CFF;color:#0C121D}
+.share-modal a.keep{background:transparent;border:0;color:#9DB2FF;text-decoration:underline;min-height:40px}
+.share-modal button{background:transparent;color:#E8EDF5;border-color:#3a4660}
 /* RunNearMe links */
 .rnm-cta{display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:end;text-decoration:none;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .rnm-cta:hover{border-color:var(--accent)}
@@ -307,20 +306,22 @@ footer a{color:var(--accent)}
     <div class="side" id="o-side"></div>
   </div>
   <div class="save-row">
-    <button type="button" id="save-res" class="save-btn" data-i18n="sv.btn">บันทึกผลนี้</button>
+    <button type="button" id="share-img" class="save-btn share-btn" data-i18n="sh.btn">แชร์รูป ↗</button>
     <a class="save-btn save-rnm" id="save-rnm" data-place="save_pace" target="_blank" rel="noopener" data-i18n="sv.rnm">บันทึกลง RunNearMe ↗</a>
-    <span class="save-note" id="save-note" data-i18n="sv.note">“บันทึกผลนี้” เก็บไว้ในเครื่องนี้ · RunNearMe เก็บในบัญชี ดูได้ทุกเครื่อง</span>
+    <span class="save-note" id="save-note" data-i18n="sv.note">เก็บประวัติผลเทสและ pace ไว้ในบัญชี RunNearMe ดูย้อนหลังได้ทุกเครื่อง ฟรี</span>
   </div>
+  <a class="rnm-cta" id="share-next" data-place="after_share" target="_blank" rel="noopener" hidden>
+    <span class="rnm-k">RunNearMe</span>
+    <span class="rnm-t" data-i18n="sn.t">แชร์แล้ว! อยากเห็นไหมว่า pace ดีขึ้นแค่ไหนหลังซ้อมไปสักเดือน?</span>
+    <span class="rnm-d" data-i18n="sn.d">เก็บผลเทสและ pace ไว้ในบัญชี ดูย้อนหลังได้ทุกเครื่อง ฟรี เข้าสู่ระบบด้วย Google</span>
+    <span class="rnm-go" data-i18n="sn.go">เก็บประวัติ pace →</span>
+  </a>
   <a class="rnm-cta rnm-top" id="rnm-top" data-rnm="/search?sort=near" data-place="after_result" target="_blank" rel="noopener">
     <span class="rnm-k">RunNearMe</span>
     <span class="rnm-t" id="rnm-top-t">รู้ pace แล้ว วันนี้ไปวิ่งที่ไหนดี?</span>
     <span class="rnm-d" data-i18n="rnm.d2">สวนวิ่งใกล้คุณ กรุงเทพฯ และอีก 15 จังหวัด พร้อมเส้นทางวัดระยะ น้ำดื่ม ห้องน้ำ เวลาเปิดปิด ใช้ฟรี</span>
     <span class="rnm-go" data-i18n="rnm.go">หาสวนใกล้คุณ →</span>
   </a>
-  <div id="hist" hidden>
-    <div class="hist-head"><h2 data-i18n="sv.h">ผลเทสของคุณ</h2><button type="button" id="hist-clear" class="link-btn" data-i18n="sv.clear">ล้างประวัติ</button></div>
-    <ol class="hist" id="o-hist"></ol>
-  </div>
 </div>
 
 <div class="sec-head"><h2 data-i18n="pace.h">Pace ซ้อม</h2><span data-i18n="pace.sub">ต่อกิโลเมตร · ต่อรอบลู่ 400 ม.</span></div>
@@ -466,7 +467,8 @@ footer a{color:var(--accent)}
     'wk.h':'Sample training week', 'wk.aria':'Training days per week', 'wk.d3':'3 days', 'wk.d4':'4 days', 'wk.d5':'5 days', 'wk.c1':'Day', 'wk.c2':'Workout',
     'lib.h':'Workout library by zone',
     'lib.note':'Every hard day: warm up with 10–15 min Easy + 4 × 20 s strides, and cool down with 10 min Easy. If you can’t hold the target pace through the set, your body isn’t ready that day. Stop the set and jog home Easy.',
-    'sv.btn':'Save this result', 'sv.rnm':'Save to RunNearMe ↗', 'sv.note':'“Save this result” keeps it on this device. RunNearMe keeps it in your account, across devices.', 'sv.h':'Your test results', 'sv.clear':'Clear history',
+    'sv.rnm':'Save to RunNearMe ↗', 'sv.note':'Keep your test results and paces in your RunNearMe account, on every device. Free.',
+    'sh.btn':'Share image ↗', 'sn.t':'Shared! Want to see how much faster your paces get after a month of training?', 'sn.d':'Keep your test results and paces in your account, on every device. Free, sign in with Google.', 'sn.go':'Keep my pace history →',
     'rnm.t':'Got your paces. Where should you run today?', 'rnm.d2':'Running parks near you in Bangkok and 15 more provinces, with measured routes, water, toilets and opening hours. Free.', 'rnm.d':'Running parks in Bangkok and 15 more provinces with route distances, water, toilets, lockers, opening hours and how to get there by BTS/MRT.', 'rnm.go':'Find a park near you →',
     'rnm2.t':'Ran your test or long run in a park? Share the route with other runners', 'rnm2.d':'Upload a .fit / .gpx file from Garmin or draw the route on the map. Free, sign in with Google.', 'rnm2.go':'Add a route →',
     'gear.h':'Recommended gear', 'gear.aff':'Affiliate links · Shopee Thailand, ships within Thailand', 'gear.go':'View on Shopee →',
@@ -483,7 +485,7 @@ footer a{color:var(--accent)}
   };
   // strings built by the script
   const S = {
-    th:{ saved:'บันทึกแล้ว ✓', confirmClear:'กดอีกครั้งเพื่อลบทั้งหมด', ltLabel:'LT 30 นาที', cpLabel:'Cooper 12 นาที', locale:'th-TH', errTime:'ใส่เวลาที่วิ่งได้ก่อน', errNeg:'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง', errLt:'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)', errCp:'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)',
+    th:{ shPaces:'Pace ซ้อม', shPred:'เวลาแข่งที่คาดว่าทำได้', shCta:'คำนวณของคุณได้ที่', shHint:'กดค้างที่รูปเพื่อบันทึก แล้วนำไปลงสตอรี่หรือส่งให้เพื่อน', shSave:'บันทึกรูป', shClose:'ปิด', shKeep:'เก็บประวัติ pace ใน RunNearMe →', ltLabel:'LT 30 นาที', cpLabel:'Cooper 12 นาที', locale:'th-TH', errTime:'ใส่เวลาที่วิ่งได้ก่อน', errNeg:'เวลาติดลบไม่ได้ ลองเช็กตัวเลขอีกครั้ง', errLt:'ใส่ระยะที่วิ่งได้ใน 30 นาที (กม.)', errCp:'ใส่ระยะที่วิ่งได้ใน 12 นาที (เมตร)',
          errRange:'ผลเทสอยู่นอกช่วงที่สูตรใช้ได้ ลองเช็กตัวเลขอีกครั้ง', testPace:'Pace เทส', ltPace:'Threshold pace (ผลเทส)', cooper:'VO₂max (สูตร Cooper)',
          km:'/กม.', l400:'/400ม.', lap400:'ต่อรอบ 400 ม.',
          fix:(t)=>`ปรับเป็น ${t} ให้แล้ว (นาทีและวินาทีใส่ได้ 0–59)`,
@@ -502,7 +504,7 @@ footer a{color:var(--accent)}
           ['T','Threshold',[`Tempo ต่อเนื่อง 20 นาที ที่ <b>${P.T}</b> /กม.`,`Cruise: 4–5 × 1.6 กม. ที่ <b>${P.T}</b> พักจ็อก 1 นาที`],'เหนื่อยแต่คุมได้ พูดได้ทีละคำ T รวมต่อครั้งไม่เกิน ~10% ของระยะทั้งสัปดาห์'],
           ['I','Interval (VO₂max)',[`5 × 1,000 ม. ที่ <b>${P.I1k}</b> /กม. พักจ็อก 3 นาที`,`6 × 800 ม. ที่ <b>${P.I400}</b> ต่อรอบ 400 ม. พักจ็อก 2–3 นาที`],'แต่ละเที่ยว 3–5 นาที I รวมต่อครั้งไม่เกิน 8% ของระยะทั้งสัปดาห์ หรือ 10 กม.'],
           ['R','Repetition',[`8 × 400 ม. ที่ <b>${P.R400}</b> พักเดิน/จ็อก 400 ม.`,`8 × 200 ม. ที่ <b>${P.R200}</b> พักเดิน 200 ม.`],'เน้นฟอร์มและความเร็ว พักให้หายเหนื่อยเต็มที่ก่อนเที่ยวถัดไป']] },
-    en:{ saved:'Saved ✓', confirmClear:'Tap again to delete all', ltLabel:'LT 30 min', cpLabel:'Cooper 12 min', locale:'en-GB', errTime:'Enter your finish time first.', errNeg:'Time can’t be negative. Check the numbers.', errLt:'Enter the distance you covered in 30 minutes (km).', errCp:'Enter the distance you covered in 12 minutes (meters).',
+    en:{ shPaces:'Training paces', shPred:'Predicted race times', shCta:'Work out yours at', shHint:'Press and hold the image to save it, then post it to your story or send it to a friend.', shSave:'Save image', shClose:'Close', shKeep:'Keep your pace history on RunNearMe →', ltLabel:'LT 30 min', cpLabel:'Cooper 12 min', locale:'en-GB', errTime:'Enter your finish time first.', errNeg:'Time can’t be negative. Check the numbers.', errLt:'Enter the distance you covered in 30 minutes (km).', errCp:'Enter the distance you covered in 12 minutes (meters).',
          errRange:'That result is outside the range the formula covers. Check the numbers.', testPace:'Test pace', ltPace:'Threshold pace (from test)', cooper:'VO₂max (Cooper formula)',
          km:'/km', l400:'/400m', lap400:'per 400 m lap',
          fix:(t)=>`Adjusted to ${t} (minutes and seconds go from 0–59)`,
@@ -559,11 +561,10 @@ footer a{color:var(--accent)}
     document.querySelectorAll('a[data-rnm]').forEach(el => { el.href = rnmUrl(el.dataset.rnm, el.dataset.place); });
     document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
     $('time-fix').hidden = true;
-    delete $('save-res').dataset.done; delete $('hist-clear').dataset.arm;
   }
   function setLang(l){
     lang = l; try{ localStorage.setItem('pacelab-lang', l); }catch(e){}
-    applyLang(); calc(); renderHistory();
+    applyLang(); calc();
     try{ if (typeof gtag === 'function') gtag('event', 'select_language', { language: l }); }catch(e){}
   }
   document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
@@ -624,12 +625,12 @@ footer a{color:var(--accent)}
     const V = err ? NaN : vdotOf(d, tMin);
     if (!err && (V < 20 || V > 90)) err = L().errRange;
     $('err').hidden = !err; $('err').textContent = err; $('guide').hidden = !!err; document.querySelector('.save-row').hidden = !!err; $('rnm-top').hidden = !!err;
-    if (err){ $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
+    if (err){ RES = null; $('share-next').hidden = true; $('o-vdot').textContent='–'; $('o-side').innerHTML=''; $('o-lanes').innerHTML=''; $('o-pred').innerHTML=''; $('hr-block').hidden=true; return; }
 
     $('o-vdot').textContent = V.toFixed(1);
     { const q = mode === 'race' ? `test=race&d=${$('race-dist').value}&t=${raceSeconds()}`
               : mode === 'lt' ? `test=lt&d=${Math.round(num('lt-dist')*1000)}${num('lt-hr') >= 100 && num('lt-hr') <= 220 ? `&hr=${Math.round(num('lt-hr'))}` : ''}` : `test=cooper&d=${Math.round(num('cp-dist'))}`;
-      $('save-rnm').href = rnmUrl('/pace/save?' + q, 'save_pace'); }
+      $('save-rnm').href = rnmUrl('/pace/save?' + q, 'save_pace'); $('share-next').href = rnmUrl('/pace/save?' + q, 'after_share'); }
     $('o-side').innerHTML = side.map(([k,v]) => `<div><span class="v">${v}</span><span class="k">${k}</span></div>`).join('');
 
     const vE1 = velAt(V*0.59), vE2 = velAt(V*0.67);
@@ -644,6 +645,9 @@ footer a{color:var(--accent)}
     P = { E:`${fmt(secPerKm(vE1))}–${fmt(secPerKm(vE2))}`, M:fmt(secPerKm(vM)), T:fmt(secPerKm(vT)), T400:fmt(per400(vT)),
           I:fmt(secPerKm(vI)), I400:fmt(per400(vI)), I1k:fmt(secPerKm(vI)), R400:fmt(per400(vR)), R200:fmt(per400(vR)/2) };
     { const easySec = (secPerKm(vE1)+secPerKm(vE2))/2; $('rnm-top-t').textContent = L().rnmTop((45*60/easySec).toFixed(1)); }
+    RES = { V, label: testLabel(), lthr: mode === 'lt' && num('lt-hr') >= 100 ? Math.round(num('lt-hr')) : null,
+            lanes: lanes.map(([c,n,,,p]) => [c, n, p, c === 'R' ? L().l400 : L().km]),
+            pred: [...$('race-dist').options].slice(2).map(o => [o.textContent, fmt(predict(V, parseFloat(o.value))*60)]) };
     renderGuide();
     $('o-lanes').innerHTML = lanes.map(([c,n,u,col,p,unit]) =>
       `<div class="lane" style="--c:${col}"><div class="bar"></div>
@@ -668,7 +672,7 @@ footer a{color:var(--accent)}
   }
 
   // ---- training guide ----
-  let P = null, days = 4;
+  let P = null, RES = null, days = 4;
   try{ const d = parseInt(localStorage.getItem('pacelab-days')); if ([3,4,5].includes(d)) days = d; }catch(e){}
   const Z = {E:'var(--z1)',M:'var(--z2)',T:'var(--z3)',I:'var(--z4)',R:'var(--z5)',X:'var(--muted)'};
   const chip = c => `<span class="chip" style="--c:${Z[c]}">${c==='X'?L().rest:c}</span>`;
@@ -701,7 +705,7 @@ footer a{color:var(--accent)}
 
   document.querySelectorAll('.gear img').forEach(img => img.addEventListener('error', () => { img.hidden = true; }));
 
-  // ---- remember inputs + saved results (this device only; nothing is sent anywhere) ----
+  // ---- remember the last inputs on this device (nothing is sent anywhere) ----
   const INPUT_IDS = ['race-dist','race-h','race-m','race-s','lt-dist','lt-hr','cp-dist'];
   const store = {
     get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
@@ -714,59 +718,81 @@ footer a{color:var(--accent)}
   let saveTimer;
   document.querySelectorAll('.panel input, .panel select').forEach(el => el.addEventListener('input', () => {
     clearTimeout(saveTimer); saveTimer = setTimeout(() => store.set('pacelab-inputs', readInputs()), 600);
-    resetSaveBtn();
   }));
 
-  const HKEY = 'pacelab-history', HMAX = 12;
-  function resultLabel(e){
-    const v = e.inputs;
-    if (e.mode === 'race'){
-      const opt = [...$('race-dist').options].find(o => o.value === v['race-dist']);
-      const t = Math.round((+v['race-h']||0)*3600 + (+v['race-m']||0)*60 + (+v['race-s']||0));
-      return `${opt ? opt.textContent : ''} ${fmt(t)}`;
-    }
-    if (e.mode === 'lt') return `${L().ltLabel} · ${v['lt-dist']} km${+v['lt-hr'] >= 100 ? ` · ${Math.round(v['lt-hr'])} bpm` : ''}`;
-    return `${L().cpLabel} · ${v['cp-dist']} m`;
+  // label for the test behind the result, e.g. "5 กม. 22:05", "LT 30 นาที · 6.1 km · 172 bpm"
+  function testLabel(){
+    if (mode === 'race') return `${$('race-dist').selectedOptions[0].textContent} ${fmt(raceSeconds())}`;
+    if (mode === 'lt') return `${L().ltLabel} · ${num('lt-dist')} km${num('lt-hr') >= 100 ? ` · ${Math.round(num('lt-hr'))} bpm` : ''}`;
+    return `${L().cpLabel} · ${Math.round(num('cp-dist'))} m`;
   }
-  function renderHistory(){
-    const h = store.get(HKEY, []);
-    $('hist').hidden = !h.length;
-    const df = new Intl.DateTimeFormat(L().locale, { day:'numeric', month:'short', year:'2-digit' });
-    $('o-hist').innerHTML = h.map((e,i) => {
-      const prev = h.slice(i+1).find(x => x.mode === e.mode);
-      const diff = prev ? e.vdot - prev.vdot : 0;
-      const ch = prev && Math.abs(diff) >= 0.1 ? `<small class="${diff > 0 ? 'up' : 'down'}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}</small>` : '';
-      return `<li><button type="button" data-i="${i}"><span class="hd">${df.format(new Date(e.t))}</span><span class="hl">${resultLabel(e)}</span><span class="hv">${e.vdot.toFixed(1)}${ch}</span></button></li>`;
-    }).join('');
+
+  // ---- share image (1080×1920, for stories and chats; same flow as TDEE Lab) ----
+  function rr(c, x, y, w, h, r){ c.beginPath(); c.moveTo(x+r, y); c.arcTo(x+w, y, x+w, y+h, r); c.arcTo(x+w, y+h, x, y+h, r); c.arcTo(x, y+h, x, y, r); c.arcTo(x, y, x+w, y, r); c.closePath(); }
+  async function shareCanvas(){
+    const t = L(), W = 1080, H = 1920, PX = 80;
+    try{ await Promise.all(['700 40px "Chakra Petch"','600 40px "Chakra Petch"','400 40px Anuphan','600 40px Anuphan'].map(f => document.fonts.load(f, 'กขVDOT0'))); }catch(e){}
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const c = cv.getContext('2d');
+    const CP = (w, px) => `${w} ${px}px "Chakra Petch", Anuphan, sans-serif`, AN = (w, px) => `${w} ${px}px Anuphan, sans-serif`;
+    const C = { bg:'#101A2B', card:'#151D2B', line:'#273246', ink:'#E8EDF5', muted:'#97A2B5', acc:'#6E8CFF', E:'#4FBF92', M:'#9BC452', T:'#E8B347', I:'#F08550', R:'#EE5B64' };
+    const gr = c.createRadialGradient(W*.85, H*.3, 50, W*.85, H*.3, 1100); gr.addColorStop(0, '#1d2a4a'); gr.addColorStop(1, C.bg);
+    c.fillStyle = gr; c.fillRect(0, 0, W, H);
+    c.textBaseline = 'alphabetic';
+    // content stays between y≈270 and y≈1700: Instagram covers the top and bottom of a story
+    c.fillStyle = C.acc; c.font = CP(600, 28); c.fillText('TRAINING PACE CALCULATOR', PX, 300);
+    c.fillStyle = C.ink; c.font = CP(700, 84); c.fillText('Pace Lab', PX, 384);
+    // VDOT card
+    rr(c, PX, 420, W-2*PX, 290, 34); c.fillStyle = C.ink; c.fill();
+    c.fillStyle = '#5A6577'; c.font = CP(600, 30); c.fillText('VDOT', PX+52, 486);
+    c.fillStyle = C.bg; c.font = CP(700, 156); c.fillText(RES.V.toFixed(1), PX+44, 630);
+    c.fillStyle = '#5A6577'; c.font = AN(400, 32); c.fillText(RES.label, PX+52, 680);
+    // training paces
+    c.fillStyle = C.ink; c.font = AN(600, 40); c.fillText(t.shPaces, PX, 790);
+    RES.lanes.forEach(([code, name, pace, unit], i) => {
+      const y = 820 + i*92;
+      rr(c, PX, y, W-2*PX, 80, 20); c.fillStyle = C.card; c.fill(); c.strokeStyle = C.line; c.lineWidth = 2; c.stroke();
+      rr(c, PX, y, 12, 80, 6); c.fillStyle = C[code]; c.fill();
+      c.fillStyle = C[code]; c.font = CP(700, 34); c.fillText(code, PX+38, y+53);
+      c.fillStyle = C.ink; c.font = AN(600, 36); c.fillText(name, PX+92, y+53);
+      c.textAlign = 'right'; c.fillStyle = C.muted; c.font = AN(400, 26); c.fillText(unit, W-PX-30, y+52);
+      const uw = c.measureText(unit).width;
+      c.fillStyle = C.ink; c.font = CP(700, 44); c.fillText(pace, W-PX-44-uw, y+55); c.textAlign = 'left';
+    });
+    // predicted race times, 2 × 2
+    c.fillStyle = C.ink; c.font = AN(600, 40); c.fillText(t.shPred, PX, 1340);
+    const bw = (W - 2*PX - 20) / 2;
+    RES.pred.forEach(([name, time], i) => {
+      const x = PX + (i % 2) * (bw + 20), y = 1370 + Math.floor(i / 2) * 92;
+      rr(c, x, y, bw, 80, 20); c.fillStyle = C.card; c.fill(); c.strokeStyle = C.line; c.lineWidth = 2; c.stroke();
+      c.fillStyle = C.muted; c.font = AN(400, 30); c.fillText(name, x+28, y+51);
+      c.textAlign = 'right'; c.fillStyle = C.ink; c.font = CP(700, 40); c.fillText(time, x+bw-28, y+54); c.textAlign = 'left';
+    });
+    // link
+    rr(c, PX, 1590, W-2*PX, 116, 30); c.fillStyle = C.ink; c.fill();
+    c.fillStyle = '#5A6577'; c.font = AN(400, 30); c.fillText(t.shCta, PX+44, 1660);
+    c.textAlign = 'right'; c.fillStyle = '#2448D8'; c.font = CP(700, 46); c.fillText('pace.runnear.me', W-PX-44, 1664); c.textAlign = 'left';
+    return cv;
   }
-  function resetSaveBtn(){ const b = $('save-res'); if (b.dataset.done){ delete b.dataset.done; b.textContent = (lang === 'en' ? EN : TH)['sv.btn']; } }
-  $('save-res').addEventListener('click', () => {
-    const v = parseFloat($('o-vdot').textContent);
-    if (!v) return;
-    const h = store.get(HKEY, []);
-    const entry = { t: Date.now(), mode, vdot: Math.round(v*10)/10, inputs: readInputs() };
-    const same = h[0] && h[0].mode === entry.mode && JSON.stringify(h[0].inputs) === JSON.stringify(entry.inputs);
-    if (same) h[0].t = entry.t; else h.unshift(entry);
-    if (store.set(HKEY, h.slice(0, HMAX))){
-      const b = $('save-res'); b.dataset.done = '1'; b.textContent = L().saved;
-      renderHistory(); track('save_result', { test: mode, vdot: Math.round(v) });
-    } else {
-      $('save-note').textContent = lang === 'en' ? 'This browser blocks saving (private mode?).' : 'เบราว์เซอร์นี้ไม่ให้บันทึก (อาจเปิดโหมดไม่ระบุตัวตน)';
-    }
-  });
-  $('o-hist').addEventListener('click', e => {
-    const btn = e.target.closest('button[data-i]'); if (!btn) return;
-    const entry = store.get(HKEY, [])[+btn.dataset.i]; if (!entry) return;
-    writeInputs(entry.inputs); store.set('pacelab-inputs', entry.inputs);
-    setMode(entry.mode); resetSaveBtn();
-    $('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-  let armTimer;
-  $('hist-clear').addEventListener('click', () => {
-    const b = $('hist-clear');
-    if (b.dataset.arm){ store.del(HKEY); renderHistory(); delete b.dataset.arm; b.textContent = (lang === 'en' ? EN : TH)['sv.clear']; return; }
-    b.dataset.arm = '1'; b.textContent = L().confirmClear;
-    clearTimeout(armTimer); armTimer = setTimeout(() => { delete b.dataset.arm; b.textContent = (lang === 'en' ? EN : TH)['sv.clear']; }, 3000);
+  function showShareModal(url){
+    const t = L(), m = document.createElement('div'); m.className = 'share-modal'; m.setAttribute('role', 'dialog');
+    m.innerHTML = `<img alt="Pace Lab" src="${url}"><p>${t.shHint}</p><div class="row"><a href="${url}" download="pace-lab.png">${t.shSave}</a><button type="button">${t.shClose}</button></div><a class="keep" href="${$('save-rnm').href}" target="_blank" rel="noopener" data-place="share_preview">${t.shKeep}</a>`;
+    m.querySelector('button').addEventListener('click', () => m.remove());
+    m.addEventListener('click', e => { if (e.target === m) m.remove(); });
+    document.body.appendChild(m);
+  }
+  function afterShare(){ $('share-next').hidden = false; }
+  $('share-img').addEventListener('click', async () => {
+    if (!RES) return;
+    const b = $('share-img'); b.disabled = true;
+    try{
+      const cv = await shareCanvas();
+      const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+      const file = new File([blob], 'pace-lab.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })){
+        try{ await navigator.share({ files: [file] }); track('share_image', { method: 'share_sheet', test: mode }); afterShare(); }
+        catch(e){ if (e && e.name !== 'AbortError') { showShareModal(cv.toDataURL('image/png')); track('share_image', { method: 'preview', test: mode }); afterShare(); } }
+      } else { showShareModal(cv.toDataURL('image/png')); track('share_image', { method: 'preview', test: mode }); afterShare(); }
+    } finally { b.disabled = false; }
   });
 
   // Google Analytics events
@@ -785,7 +811,6 @@ footer a{color:var(--accent)}
   applyLang();
   try{ if (typeof gtag === 'function') gtag('set', 'user_properties', { ui_language: lang }); }catch(e){}
   setMode(['race','lt','cooper'].includes(mode) ? mode : 'race');
-  renderHistory();
 })();
 </script>
 </body>
